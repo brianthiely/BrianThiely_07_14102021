@@ -5,6 +5,8 @@ const path = require('path');
 const userRoutes = require('./routes/user');
 const app = express();
 
+
+
 require('dotenv').config();
 
 // Sécurité
@@ -13,7 +15,8 @@ app.use(cors());
 
 // App
 app.use(express.json());
-app.use('/api/user', userRoutes);
+app.use('/api/auth', userRoutes);
+
 
 module.exports = app
 
