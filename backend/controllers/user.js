@@ -19,7 +19,7 @@ exports.signup = async (req, res) => {
 			return res.status(400).json({ message: 'Param miss' });
 		}
 
-		const alreadyUser = await models.User.findOne({
+		const alreadyUser = await models.findOne({
 			attributes: ['email'],
 			where: { email: email }
 		});
@@ -28,12 +28,13 @@ exports.signup = async (req, res) => {
 			throw new Error ("Utilisateur existant");
 		}
 
-		const newUser = await models.User.create({
+		const newUser = await models.create({
 			email: email,
 			username: username,
 			password: await bcrypt.hash(password, 10),
 			profile_picture: profile_picture,
 			bio: bio,
+			isAdmin: false
 		});
 
 		if (!newUser) {
@@ -46,6 +47,7 @@ exports.signup = async (req, res) => {
 			username: newUser.username,
 			profile_picture: newUser.profile_picture,
 			bio: newUser.bio,
+			isAdmin: newUser.isAdmin
 		});
 	} catch (error) {
 		res.status(400).json({ message:'Ko', error});
