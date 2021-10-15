@@ -8,12 +8,12 @@ require('dotenv').config();
 // Logique exporter dans les routes pour l'inscription d'utilisateurs
 exports.signup = async (req, res) => {
 	// Recup param
-	let email = req.query.email;
-	let username = req.query.username;
-	let password = req.query.password;
-	let profile_picture = req.query.profile_picture;
-	let bio = req.query.bio;
-	let isAdmin = req.query.isAdmin;
+	let email = req.body.email;
+	let username = req.body.username;
+	let password = req.body.password;
+	let profile_picture = req.body.profile_picture;
+	let bio = req.body.bio;
+	let isAdmin = req.body.isAdmin;
 
 	try {
 		if (email == null || username == null || password == null) {
