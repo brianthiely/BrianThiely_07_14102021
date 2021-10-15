@@ -13,7 +13,6 @@ exports.signup = async (req, res) => {
 	let password = req.body.password;
 	let profile_picture = req.body.profile_picture;
 	let bio = req.body.bio;
-	let isAdmin = req.body.isAdmin;
 
 	try {
 		if (email == null || username == null || password == null) {
@@ -35,7 +34,6 @@ exports.signup = async (req, res) => {
 			password: await bcrypt.hash(password, 10),
 			profile_picture: profile_picture,
 			bio: bio,
-			isAdmin: isAdmin,
 		});
 
 		if (!newUser) {
@@ -48,9 +46,8 @@ exports.signup = async (req, res) => {
 			username: newUser.username,
 			profile_picture: newUser.profile_picture,
 			bio: newUser.bio,
-			isAdmin: newUser.isAdmin
 		});
 	} catch (error) {
-		res.status(400).json({ message: "KO" });
+		res.status(400).json({ message:'Ko', error});
 	}
 }
