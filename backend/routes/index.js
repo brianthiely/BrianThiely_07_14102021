@@ -1,7 +1,5 @@
-const postsCtrl = require('../controllers/posts');
-const usersCtrl = require('../controllers/users');
+const userRoutes = require('../routes/users');
 
 module.exports = (app) => {
-	app.use('/posts', postsCtrl);
-	app.use('/', usersCtrl);
+	app.use('/groupomania/auth', userRoutes);
 };

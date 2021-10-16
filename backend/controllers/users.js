@@ -1,10 +1,12 @@
 const { response } = require('express');
-var express = require('express');
-var router = express.Router();
 const { User } = require('../models');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const cryptojs = require('crypto-js');
+require('dotenv').config();
 
-// Création compte employé
-router.post('/register', async function (req, res, next) {
+exports.create = async (req, res, next) => {
+	// Création user
 	try {
 		const { body } = req;
 		const responseAdded = await User.create(body);
@@ -12,20 +14,20 @@ router.post('/register', async function (req, res, next) {
 	} catch (error) {
 		next(error);
 	}
-});
+};
 
-// Liste tout les employés de la boite
-router.get('/users=all', async function (req, res, next) {
+exports.readAll = async (req, res, next) => {
+	// Liste tout les employés de la boite
 	try {
 		const usersdata = await User.findAll();
 		res.send(usersdata);
 	} catch (error) {
 		next(error);
 	}
-});
+};
 
-// Affiche le profil d'un employé
-router.get('/userprofil=:id', async function (req, res, next) {
+exports.readOne = async (req, res, next) => {
+	// Affiche le profil d'un employé
 	try {
 		const { id } = req.params;
 		console.log(id);
@@ -34,10 +36,10 @@ router.get('/userprofil=:id', async function (req, res, next) {
 	} catch (error) {
 		next(error);
 	}
-});
+};
 
-// Modification compte employé
-router.put('/usermodify:id', async function (req, res, next) {
+exports.update = async (req, res, next) => {
+	// Modification compte employé
 	try {
 		const { body, params } = req;
 		const { id } = params;
@@ -46,10 +48,10 @@ router.put('/usermodify:id', async function (req, res, next) {
 	} catch (error) {
 		next(error);
 	}
-});
+};
 
-// Suppression compte employé
-router.delete('/userdelete:id', async function (req, res, next) {
+exports.delete = async (req, res, next) => {
+	// Suppression compte employé
 	try {
 		const { id } = req.params;
 		const deleteResult = await User.destroy({ where: { id: id } });
@@ -57,6 +59,4 @@ router.delete('/userdelete:id', async function (req, res, next) {
 	} catch (error) {
 		next(error);
 	}
-});
-
-module.exports = router;
+};
