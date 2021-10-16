@@ -4,7 +4,7 @@ var router = express.Router();
 const { User } = require('../models');
 
 // Création compte employé
-router.post('/', async function (req, res, next) {
+router.post('/register', async function (req, res, next) {
 	try {
 		const { body } = req;
 		const responseAdded = await User.create(body);
@@ -15,7 +15,7 @@ router.post('/', async function (req, res, next) {
 });
 
 // Liste tout les employés de la boite
-router.get('/', async function (req, res, next) {
+router.get('/users=all', async function (req, res, next) {
 	try {
 		const usersdata = await User.findAll();
 		res.send(usersdata);
@@ -25,7 +25,7 @@ router.get('/', async function (req, res, next) {
 });
 
 // Affiche le profil d'un employé
-router.get('/:id', async function (req, res, next) {
+router.get('/userprofil=:id', async function (req, res, next) {
 	try {
 		const { id } = req.params;
 		console.log(id);
@@ -37,7 +37,7 @@ router.get('/:id', async function (req, res, next) {
 });
 
 // Modification compte employé
-router.put('/:id', async function (req, res, next) {
+router.put('/usermodify:id', async function (req, res, next) {
 	try {
 		const { body, params } = req;
 		const { id } = params;
@@ -49,7 +49,7 @@ router.put('/:id', async function (req, res, next) {
 });
 
 // Suppression compte employé
-router.delete('/:id', async function (req, res, next) {
+router.delete('/userdelete:id', async function (req, res, next) {
 	try {
 		const { id } = req.params;
 		const deleteResult = await User.destroy({ where: { id: id } });
