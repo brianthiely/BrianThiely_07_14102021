@@ -1,48 +1,52 @@
-const sql = require('./db');
-
-//constructeur
-const userSchema = function(user) {
-    this.mail = user.mail;
-    this.password = user.password;
-    this.firstname = user.firstname;
-    this.lastname = user.lastname;
-    this.role = user.role;
-    this.picture = user.picture;
-    this.isAdmin = user.isAdmin;
-    
+const { Model } = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+	class User extends Model {
+		static associations(models) {
+			// create associations
+		}
+	}
+	User.init(
+		{
+			email: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				unique: true,
+				required: true,
+			},
+			password: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				required: true,
+			},
+			firstName: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				unique: false,
+				required: true,
+			},
+			lastName: {
+				type: DataTypes.STRING,
+				allowNull: false,
+				unique: false,
+				required: true,
+			},
+			role: {
+				type: DataTypes.STRING,
+				allowNull: false,
+			},
+			picture: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
+			isAdmin: {
+				type: DataTypes.BOOLEAN,
+                defaultValue: false
+			},
+		},
+		{
+			sequelize,
+			modelName: 'User',
+		}
+	);
+	return User;
 };
-
-//rechercher l'utilisateur par l'id
-userSchema.findById = (idUSERS, result)=>{
-    sql.query(`SELECT * FROM users WHERE idUSERS = ${idUSERS} `,(err, res)=>{ //${user_id}
-        if (err) {
-            console.log("error: ", err);
-            result(err, null);
-            return;
-        }
-        if(res.length){
-            console.log("utilisateur trouvé: ", res[0]);
-            result(null, res[0]);
-            return;
-        }
-        //utilisateur introuvable 
-        result({ kind: "not_found" }, null);
-    })
-};
-
-//Selectionner tout les users
-
-userSchema.getAll = result => {
-    sql.query("SELECT * FROM users", (err, res) =>{
-        if (err) {
-            console.log("error: ", err);
-        result(null, err);
-        return;
-        }
-        console.log("utilisateurs: ", res);
-        result(null, res);
-        
-    });
-};
-
-module.exports = userSchema;

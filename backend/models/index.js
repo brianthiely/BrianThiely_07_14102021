@@ -1,36 +1,35 @@
-'use strict';
-
-import { readdirSync } from 'fs';
-import { basename as _basename, join } from 'path';
-import Sequelize, { DataTypes } from 'sequelize';
-const basename = _basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
+const Sequelize = require('sequelize');
+const fs = require('fs');
+const path = require('path');
+const basename = path.basename(module.filename);
 const db = {};
-
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
-
-readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
-  })
-  .forEach(file => {
-    const model = require(join(__dirname, file))(sequelize, DataTypes);
-    db[model.name] = model;
-  });
-
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
+const seq = new Sequelize('groupomania', 'root', `${process.env.PASSMYSQL}`, {
+	host: 'localhost',
+	dialect: 'mysql',
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+seq.authenticate().then(() => {
+		console.log('Connexion réussie BDD : groupomania');
+	})
+	.catch((err) => {
+		console.log('Connexion échoué BDD : groupomania', err);
+	});
 
-export default db;
+    console.log(__dirname);
+    fs.readdirSync(__dirname)
+    .filter(function (file) {
+        return (file.indexOf('.')!==0) && (file !== basename) && (file.slice(-3) === '.js');
+    }).forEach(function (file) {
+        let model = require(path.join(__dirname, file))(seq, Sequelize.DataTypes);
+        db[model.name] = model;
+    });
+
+    Object.keys(db).forEach(function (modelName) {
+        if(db[modelName].associate) {
+            db[modelName].associate(db);
+        }
+    })
+    db.sequelize = seq;
+    db.Sequelize = Sequelize;
+
+    module.exports = db;

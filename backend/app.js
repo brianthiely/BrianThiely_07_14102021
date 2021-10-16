@@ -1,39 +1,35 @@
-const express = require('express');
-const session = require('cookie-session');
-const helmet = require('helmet');
-const cors = require('cors');
-const path = require('path');
-const userRoutes = require('./routes/user');
-const app = express();
 require('dotenv').config();
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var routes = require('./routes/index');
+var app = express();
 
-// Sécurité
-app.use(helmet());
-app.use(cors());
 
-// App
-const expiryDate = new Date(Date.now()+60*60*1000);
-app.use(session({
-  name: 'session',
-  secret: process.env.COOKIES,
-  cookie: {
-    secure: true,
-    httpOnly: true,
-    domain: 'http://localhost:3308',
-    expires: expiryDate
-  }
-}));
+
+app.use(logger('dev'));
 app.use(express.json());
-// app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+routes(app);
 
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+	next(createError(404));
+});
 
+// error handler
+app.use(function (err, req, res, next) {
+	// set locals, only providing error in development
+	res.locals.message = err.message;
+	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-app.use('/api/auth', userRoutes);
-// app.use('/api/post', postRoutes);
-// app.use('/api/comment', commentRoutes);
+	// render the error page
+	res.status(err.status || 500);
+	res.render('error');
+});
 
-
-module.exports = app
-
-
-
+module.exports = app;
