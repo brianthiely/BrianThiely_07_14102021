@@ -6,6 +6,9 @@ const cryptojs = require('crypto-js');
 require('dotenv').config();
 
 exports.create = async (req, res, next) => {
+
+
+
 	// Création user
 	try {
 		const { body } = req;
