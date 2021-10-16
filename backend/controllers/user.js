@@ -34,7 +34,9 @@ exports.signup = async (req, res) => {
 			password: await bcrypt.hash(password, 10),
 			profile_picture: profile_picture,
 			bio: bio,
-			isAdmin: false
+			isAdmin: false,
+			createdAt: Date.now(),
+			updatedAt: Date.now()
 		});
 
 		if (!newUser) {
