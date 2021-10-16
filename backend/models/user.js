@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
 	class User extends Model {
 		static associations(models) {
 			// create associations
+			models.User.hasMany(models.Post)
 		}
 	}
 	User.init(

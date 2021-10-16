@@ -1,7 +1,7 @@
-const homeCtrl = require('../controllers/home');
+const postsCtrl = require('../controllers/posts');
 const usersCtrl = require('../controllers/users');
 
 module.exports = (app) => {
-	app.use('/', homeCtrl);
+	app.use('/posts', postsCtrl);
 	app.use('/users', usersCtrl);
 };
