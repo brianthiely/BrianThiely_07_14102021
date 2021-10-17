@@ -119,7 +119,7 @@ exports.login = async (req, res, next) => {
 };
 
 // Affiche profil utilisateur
-exports.findOne = async (req, res, next) => {
+exports.findUser = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		console.log(id);
@@ -131,7 +131,7 @@ exports.findOne = async (req, res, next) => {
 };
 
 // Mise à jour compte utilisateur
-exports.updateOne = async (req, res, next) => {
+exports.updateUser = async (req, res, next) => {
 	try {
 		const { body, params } = req;
 		const { id } = params;
@@ -146,7 +146,7 @@ exports.updateOne = async (req, res, next) => {
 };
 
 // Suppression compte utilisateur
-exports.deleteOne = async (req, res, next) => {
+exports.deleteUser = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const deleteResult = await User.destroy({ where: { id: id } });

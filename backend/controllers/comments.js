@@ -1,4 +1,4 @@
-// const router = express.Router();
+const router = express.Router();
 const { Post } = require('../models');
 const fs = require('fs');
 
@@ -33,7 +33,7 @@ exports.deletePost = async (req, res, next) => {
 };
 
 
-// module.exports = router;
+module.exports = router;
 
 
 // // Création
@@ -91,4 +91,3 @@ exports.deletePost = async (req, res, next) => {
 // 		next(error);
 // 	}
 // });
-
