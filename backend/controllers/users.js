@@ -136,7 +136,7 @@ exports.updateUser = async (req, res, next) => {
 		const UpdateUser = await User.update(body, { where: { id: id } });
 		res.status(200).json({
 			user: UpdateUser,
-			message: 'Mise à jour effectué avec succès',
+			message: "Mise à jour effectué avec succès",
 		});
 	} catch (error) {
 		res.status(400).json({ error: error.message });

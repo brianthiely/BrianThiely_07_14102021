@@ -10,7 +10,9 @@ exports.createPost = async (req, res, next) => {
 		const userFind = await User.findOne({ where: { id: req.params } });
 
 		if (!userFind) {
-			throw new Error('Une erreur est survenu, réessayer plus tard');
+			throw new Error(
+				"Tentative de création d'une publication' de la part d'un non membre"
+			);
 		}
 
 		const newPost = await Post.create({
@@ -21,7 +23,7 @@ exports.createPost = async (req, res, next) => {
 		});
 
 		if (!newPost) {
-			throw new Error("Impossible d'envoyer une publication sans texte");
+			throw new Error('Impossible de créer une publication sans texte');
 		}
 
 		res.status(200).json({ newPost });
@@ -39,9 +41,9 @@ exports.readAllPost = async (req, res, next) => {
 		const order = req.query.order;
 
 		const posts = await Post.findAll({
-			// If true value =null split string at ":"(empty array)  else if false sort DESC array
+			// si value = null order.split(url) divisera le "strings" à chaque (":") et les retournera en tableau qu'elle triera en ordre de création decroissant
 			order: [order != null ? order.split(':') : ['createdAt', 'DESC']],
-			// If true all fields are retrieved and not null split or if is false attrib.null
+			// si tout les champs sont selectgionnés et ne sont pas null alors il seront trié dans un tableau
 			attributes: fields != '*' && fields != null ? fields.split(',') : null,
 			include: [
 				{
@@ -52,7 +54,7 @@ exports.readAllPost = async (req, res, next) => {
 		});
 
 		if (!posts) {
-			throw new Error(' Sorry , nothing to fetch');
+			throw new Error('Aucune publication disponible dans le serveur');
 		}
 		res.status(200).send(posts);
 	} catch (error) {
@@ -69,9 +71,9 @@ exports.readPostsUser = async (req, res, next) => {
 		const order = req.query.order;
 
 		const postsUser = await Post.findAll({
-			// If true value =null split string at ":"(empty array)  else if false sort DESC array
+			// si value = null order.split(url) divisera le "strings" à chaque (":") et les retournera en tableau qu'elle triera en ordre de création decroissant
 			order: [order != null ? order.split(':') : ['createdAt', 'DESC']],
-			// If true all fields are retrieved and not null split or if is false attrib.null
+			// si tout les champs sont selectgionnés et ne sont pas null alors il seront trié dans un tableau
 			attributes: fields != '*' && fields != null ? fields.split(',') : null,
 			include: [
 				{
@@ -91,8 +93,6 @@ exports.readPostsUser = async (req, res, next) => {
 	}
 };
 
-/* CONTROLLERS MODERATION ?????? SI OUI SOUS QUEL FORME?*/
-
 // Modifie publication
 exports.updatePost = async (req, res, next) => {
 	try {
@@ -104,8 +104,8 @@ exports.updatePost = async (req, res, next) => {
 			where: { id: id },
 		});
 
-		if(!findPost) {
-			throw new Error('Publication introuvable')
+		if (!findPost) {
+			throw new Error('Publication introuvable');
 		}
 
 		if (findPost && findPost.UserId !== req.user.id) {
@@ -118,10 +118,9 @@ exports.updatePost = async (req, res, next) => {
 			userId: req.user.id,
 		});
 
-		res.status(201).json({message: "Publication modifié avec succès"});
-
+		res.status(201).json({ message: 'Publication modifié avec succès' });
 	} catch (error) {
-		res.status(400).json({ error: error.message })
+		res.status(400).json({ error: error.message });
 	}
 };
 
@@ -129,64 +128,34 @@ exports.updatePost = async (req, res, next) => {
 exports.deletePost = async (req, res, next) => {
 	try {
 		const { id } = req.params;
+		const post = await Post.findOne({
+			where: { id: id },
+		});
 
-	} catch (error) {}
+		if (post.attachement !== null) {
+			const filename = post.attachement.split('/images')[1];
+			fs.unlink(`images/${filename}`, () => {
+				Post.destroy({
+					where: { id: id },
+				});
+				res.status(200).json({ message: 'Publication supprimé avec succès' });
+			});
+		}
+
+		const destroyComments = await Comment.destroy({
+			where: { id: id },
+		});
+
+		if (!destroyComments) {
+			throw new Error('Tentative de suppresion commentaire echoué');
+		} else {
+			res
+				.status(200)
+				.json({
+					message: 'les commentaires ont également été supprimé avec succès',
+				});
+		}
+	} catch (error) {
+		res.status(404).json({ error: error.message });
+	}
 };
-
-// module.exports = router;
-
-// // Création
-// router.post('/', async function (req, res, next) {
-// 	try {
-// 		const { body } = req;
-// 		const responseAdded = await Post.create(body);
-// 		res.send(responseAdded);
-// 	} catch (error) {
-// 		next(error);
-// 	}
-// });
-
-// // Affiche toutes les publications
-// router.get('/', async function (req, res, next) {
-// 	try {
-// 		const postsdata = await Post.findAll();
-// 		res.send(postsdata);
-// 	} catch (error) {
-// 		next(error);
-// 	}
-// });
-
-// // Affiche une publication
-// router.get('/:id', async function (req, res, next) {
-// 	try {
-// 		const { id } = req.params;
-// 		console.log(id);
-// 		const postData = await Post.findOne({ where: { id: id } });
-// 		res.send(postData);
-// 	} catch (error) {
-// 		next(error);
-// 	}
-// });
-
-// // Modification d'une publication
-// router.put('/:id', async function (req, res, next) {
-// 	try {
-// 		const { body, params } = req;
-// 		const { id } = params;
-// 		const updateResData = await Post.update(body, { where: { id: id } });
-// 		res.send({ updateStatus: updateResData });
-// 	} catch (error) {
-// 		next(error);
-// 	}
-// });
-
-// // Suppression d'une publication
-// router.delete('/:id', async function (req, res, next) {
-// 	try {
-// 		const { id } = req.params;
-// 		const deleteResult = await Post.destroy({ where: { id: id } });
-// 		res.send({ deleteStatus: deleteResult });
-// 	} catch (error) {
-// 		next(error);
-// 	}
-// });
