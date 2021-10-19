@@ -2,15 +2,17 @@ require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
+const fs = require('fs')
 const cookieParser = require('cookie-parser');
-const logger = require('morgan');
+const morgan = require('morgan');
 const routes = require('./routes/index');
 const app = express();
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+require('dotenv').config();
 
 
-
-app.use(logger('dev'));
 app.use(express.json());
+app.use(morgan('combined', { stream: accessLogStream }))
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));

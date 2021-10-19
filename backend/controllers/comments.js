@@ -1,33 +1,26 @@
 const router = express.Router();
-const { Post } = require('../models');
-const fs = require('fs');
+const { Comment } = require('../models');
 
-// Création publication
-exports.createPost = async (req, res, next) => {
+// Création commentaire
+exports.createComment = async (req, res, next) => {
 	try {
 	} catch (error) {}
 };
 
-// Affiche publications
-exports.readAllPost = async (req, res, next) => {
+// Affiche commentaires
+exports.readComments = async (req, res, next) => {
 	try {
 	} catch (error) {}
 };
 
-// Affiche une publication
-exports.readOnePost = async (req, res, next) => {
+// Modifie commentaire
+exports.updateComment = async (req, res, next) => {
 	try {
 	} catch (error) {}
 };
 
-// Modifie publication
-exports.updatePost = async (req, res, next) => {
-	try {
-	} catch (error) {}
-};
-
-// Supprime publication
-exports.deletePost = async (req, res, next) => {
+// Supprime commentaire
+exports.deleteComment = async (req, res, next) => {
 	try {
 	} catch (error) {}
 };

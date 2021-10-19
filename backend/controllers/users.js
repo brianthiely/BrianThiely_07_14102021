@@ -81,11 +81,9 @@ exports.register = async (req, res, next) => {
 // Connexion compte utilisateur
 exports.login = async (req, res, next) => {
 	try {
-		const user = await User.findOne({
-			where: {
-				email: email.req.body,
-			},
-		});
+		const cryptEmail = cryptojs.HmacSHA512(req.body.email, process.env.SECRET_CRYPTOJS_TOKEN).toString(cryptojs.enc.Base64);
+		const user = await User.findOne({ where: {email: cryptEmail}
+	})
 
 		if (!user) {
 			throw new Error('Compte introuvable');

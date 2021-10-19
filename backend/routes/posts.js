@@ -8,7 +8,7 @@ router.post('/create', postCtrl.createPost);
 // Affiche publications
 router.post('/helloworld', postCtrl.readAllPost);
 // Affiche publication
-router.get('/post=:id', postCtrl.readOnePost);
+router.get('/post=:id', postCtrl.readPostsUser);
 // Modification publication
 router.put('/updatepost:id', postCtrl.updatePost);
 // Suppression publication
