@@ -7,26 +7,18 @@ const fs = require('fs');
 // Création publication
 exports.createPost = async (req, res, next) => {
 	try {
-		const userFind = await User.findOne({ where: { id: req.params } });
-
-		if (!userFind) {
-			throw new Error(
-				"Tentative de création d'une publication' de la part d'un non membre"
-			);
-		}
-
 		const newPost = await Post.create({
 			content: req.body.content,
-			attachement: `${req.protocol}://${req.get('host')}/images/${
-				req.file.filename
-			}`,
+			// attachement: req.body.attachement,
+			userId: req.user.id
+			
 		});
 
 		if (!newPost) {
 			throw new Error('Impossible de créer une publication sans texte');
 		}
 
-		res.status(200).json({ newPost });
+		res.status(200).json({ message: 'Publication réussi', newPost });
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}
@@ -149,11 +141,9 @@ exports.deletePost = async (req, res, next) => {
 		if (!destroyComments) {
 			throw new Error('Tentative de suppresion commentaire echoué');
 		} else {
-			res
-				.status(200)
-				.json({
-					message: 'les commentaires ont également été supprimé avec succès',
-				});
+			res.status(200).json({
+				message: 'les commentaires ont également été supprimé avec succès',
+			});
 		}
 	} catch (error) {
 		res.status(404).json({ error: error.message });

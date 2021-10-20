@@ -6,11 +6,13 @@ require('dotenv').config();
 
 // Création compte utilisateur
 exports.register = async (req, res, next) => {
-	const email = req.body.email;
-	const password = req.body.password;
-	const firstName = req.body.firstName;
-	const lastName = req.body.lastName;
-	const role = req.body.role;
+	const params = req.body;
+	const email = params.email;
+	const password = params.password;
+	const firstName = params.firstName;
+	const lastName = params.lastName;
+	const role = params.role;
+	const picture = params.picture;
 
 	const emailRegex =
 		/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -18,7 +20,7 @@ exports.register = async (req, res, next) => {
 		/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,}$/;
 
 	try {
-		if (!email && !password && !firstname && !lastname && !role) {
+		if (!email && !password && !firstName && !lastName && !role) {
 			throw new Error('Champs manquant');
 		}
 
@@ -41,7 +43,7 @@ exports.register = async (req, res, next) => {
 			throw new Error('Vous avez déjà un compte');
 		}
 
-		// Si je peux crypter plus haut je remplace ceci par
+		// Si je peux crypter ailleurs je remplace ceci par
 		// const { body } = req;
 		// 	// 	const newUser = await User.create(body);
 		const newUser = await User.create({
@@ -52,8 +54,8 @@ exports.register = async (req, res, next) => {
 			firstName: firstName,
 			lastName: lastName,
 			role: role,
-			// picture: picture,
-			// isAdmin: 0,
+			picture: picture,
+			isAdmin: 0,
 		});
 
 		if (!newUser) {
@@ -72,7 +74,7 @@ exports.register = async (req, res, next) => {
 			);
 		}
 
-		res.status(201).json({ message: 'Utilisateur crée avec succès !' });
+		res.status(201).json({ message: 'Utilisateur créé avec succès !' });
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}
@@ -81,9 +83,10 @@ exports.register = async (req, res, next) => {
 // Connexion compte utilisateur
 exports.login = async (req, res, next) => {
 	try {
-		const cryptEmail = cryptojs.HmacSHA512(req.body.email, process.env.SECRET_CRYPTOJS_TOKEN).toString(cryptojs.enc.Base64);
-		const user = await User.findOne({ where: {email: cryptEmail}
-	})
+		const cryptEmail = cryptojs
+			.HmacSHA512(req.body.email, process.env.SECRET_CRYPTOJS_TOKEN)
+			.toString(cryptojs.enc.Base64);
+		const user = await User.findOne({ where: { email: cryptEmail } });
 
 		if (!user) {
 			throw new Error('Compte introuvable');
@@ -107,9 +110,7 @@ exports.login = async (req, res, next) => {
 		});
 
 		if (!tokenConnection) {
-			throw new Error(
-				"Désolé, une erreur s'est produite, veuillez réessayer plus tard"
-			);
+			throw new Error('Token non distribué');
 		}
 	} catch (error) {
 		res.status(400).json({ error: error.message });
@@ -131,12 +132,30 @@ exports.findUser = async (req, res, next) => {
 // Mise à jour compte utilisateur
 exports.updateUser = async (req, res, next) => {
 	try {
-		const { body, params } = req;
-		const { id } = params;
-		const UpdateUser = await User.update(body, { where: { id: id } });
+		const { id } = req.params;
+		const userFind = await User.findOne({ where: { id: id } });
+
+		if (!userFind) {
+			throw new Error('Utilisateur introuvable');
+		}
+		const userUpdate = await User.update(
+			{
+				firstName: req.body.firstName,
+				lastName: req.body.lastName,
+				role: req.body.role,
+				isAdmin: req.body.isAdmin,
+			},
+			{
+				where: { id: id },
+			}
+		);
+
+		if (!userUpdate) {
+			throw new Error('La mise à jour à échoué');
+		}
 		res.status(200).json({
-			user: UpdateUser,
-			message: "Mise à jour effectué avec succès",
+			user: userUpdate.isAdmin,
+			message: 'Mise à jour réussi',
 		});
 	} catch (error) {
 		res.status(400).json({ error: error.message });
@@ -148,7 +167,7 @@ exports.deleteUser = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const deleteResult = await User.destroy({ where: { id: id } });
-		res.send({ deleteStatus: deleteResult });
+		res.status(200).json({ deleteResult });
 	} catch (error) {
 		next(error);
 	}

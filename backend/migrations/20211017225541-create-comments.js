@@ -7,6 +7,27 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      }, 
+      userId: {
+				allowNull: false,
+				type: Sequelize.INTEGER,
+				references: {
+					model: "Users",
+					key: "id"
+				}
+      },
+      postId: {
+				allowNull: false,
+				type: Sequelize.INTEGER,
+				onDelete: "cascade",
+				references: {
+					model: "Posts",
+					key: "id"
+				}
+			},
+      isAdmin: {
+				allowNull: false,
+        type: Sequelize.BOOLEAN
       },
       comment: {
         allowNull: false,
@@ -14,10 +35,12 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
+        defaultValue: new Date(),
         type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
+        defaultValue: new Date(),
         type: Sequelize.DATE
       }
     });

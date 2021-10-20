@@ -8,10 +8,10 @@ router.post('/register', userCtrl.register);
 // Connexion compte employé
 router.post('/login', userCtrl.login);
 // Affiche le profil d'un employé
-router.get('/userprofile=:id', userCtrl.findUser);
+router.get('/user/profile/:id', userCtrl.findUser);
 // Modification compte employé
-router.put('/userupdate:id', userCtrl.updateUser);
+router.put('/user/update/:id', userCtrl.updateUser);
 // Suppression compte employé
-router.delete('/userdelete:id', userCtrl.deleteUser);
+router.delete('/user/delete/:id', userCtrl.deleteUser);
 
 module.exports = router;

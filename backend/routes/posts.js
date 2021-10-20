@@ -2,16 +2,18 @@ const express = require('express');
 const router = express.Router();
 
 const postCtrl = require('../controllers/posts');
+const auth = require('../middleware/auth');
+
 
 // Création publication
-router.post('/create', postCtrl.createPost);
+router.post('/post/create',auth,  postCtrl.createPost);
 // Affiche publications
-router.post('/helloworld', postCtrl.readAllPost);
+router.post('/helloworld',auth, postCtrl.readAllPost);
 // Affiche publication
-router.get('/post=:id', postCtrl.readPostsUser);
+router.get('/post/:id',auth, postCtrl.readPostsUser);
 // Modification publication
-router.put('/updatepost:id', postCtrl.updatePost);
+router.put('/updatepost/id',auth, postCtrl.updatePost);
 // Suppression publication
-router.delete('/postdelete:id', postCtrl.deletePost);
+router.delete('/postdelete:id',auth, postCtrl.deletePost);
 
 module.exports = router;
