@@ -3,24 +3,23 @@ const { Post } = require('../models');
 const { User } = require('../models');
 const fs = require('fs');
 
-/* ROUTE CREATE POST NON VALIDE ON POSTMAN */
 // Création publication
 exports.createPost = async (req, res, next) => {
 	try {
 		const userId = req.user.id;
 		const params = req.body;
-		const attachement = `${req.protocol}://${req.get('host')}/images/${params.attachement}`;
+		const attachement = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
 
 		const newPost = await Post.create({
 			userId: userId,
 			content: params.content,
 			attachement: attachement,
 		});
-		
+
 		if (!newPost) {
 			throw new Error('Impossible de créer une publication sans texte');
 		}
-	
+
 		res.status(200).json({ message: 'Publication réussi', newPost });
 	} catch (error) {
 		res.status(400).json({ error: error.message });
@@ -35,6 +34,11 @@ exports.readAllPosts = async (req, res, next) => {
 		// Récupere les valeurs
 		const order = req.query.order;
 
+		console.log('fields');
+		console.log(fields);
+		console.log("order");
+		console.log(order);
+
 		const posts = await Post.findAll({
 			// si value = null order.split(url) divisera le "strings" à chaque (":") et les retournera en tableau qu'elle triera en ordre de création decroissant
 			order: [order != null ? order.split(':') : ['createdAt', 'DESC']],
@@ -43,7 +47,7 @@ exports.readAllPosts = async (req, res, next) => {
 			include: [
 				{
 					model: User,
-					attributes: ['isAdmin'],
+					attributes: ['firstName', 'lastName', 'role', 'isAdmin'],
 				},
 			],
 		});
@@ -51,7 +55,7 @@ exports.readAllPosts = async (req, res, next) => {
 		if (!posts) {
 			throw new Error('Aucune publication disponible dans le serveur');
 		}
-		res.status(200).send(posts);
+		res.status(200).json(posts);
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}
@@ -73,7 +77,7 @@ exports.readPostsUser = async (req, res, next) => {
 			include: [
 				{
 					model: User,
-					attributes: ['firstName', 'lastName'],
+					attributes: ['firstName', 'lastName', 'role', 'isAdmin'],
 					where: { id: req.params.id },
 				},
 			],
@@ -92,7 +96,7 @@ exports.readPostsUser = async (req, res, next) => {
 exports.updatePost = async (req, res, next) => {
 	try {
 		const attachment = `${req.protocol}://${req.get('host')}/images/${
-			req.file.filename
+			req.params.attachement
 		}`;
 		const { id } = req.params;
 		const findPost = await Post.findOne({
@@ -137,18 +141,18 @@ exports.deletePost = async (req, res, next) => {
 			});
 		}
 
-		const destroyComments = await Comment.destroy({
-			where: { id: id },
-		});
+		// const destroyComments = await Comment.destroy({
+		// 	where: { id: id },
+		// });
 
-		if (!destroyComments) {
-			throw new Error('Tentative de suppresion commentaire echoué');
-		} else {
-			res.status(200).json({
-				message: 'les commentaires ont également été supprimé avec succès',
-			});
-		}
+		// if (!destroyComments) {
+		// 	throw new Error('Tentative de suppresion commentaire echoué');
+		// } else {
+		// 	res.status(200).json({
+		// 		message: 'les commentaires ont également été supprimé avec succès',
+		// 	});
+		// }
 	} catch (error) {
-		res.status(404).json({ error: error.message });
+		res.status(400).json({ error: error.message });
 	}
 };

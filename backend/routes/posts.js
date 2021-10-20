@@ -13,8 +13,8 @@ router.get('/helloworld',auth, multer, postCtrl.readAllPosts);
 // Affiche publication
 router.get('/post/:id',auth, multer, postCtrl.readPostsUser);
 // Modification publication
-router.put('/updatepost/id',auth, postCtrl.updatePost);
+router.put('/post/update/:id',auth, postCtrl.updatePost);
 // Suppression publication
-router.delete('/postdelete:id',auth, multer, postCtrl.deletePost);
+router.delete('/post/delete/:id',auth, multer, postCtrl.deletePost);
 
 module.exports = router;
