@@ -56,13 +56,50 @@ exports.readComments = async (req, res, next) => {
 // Modifie commentaire
 exports.updateComment = async (req, res, next) => {
 	try {
-	} catch (error) {}
+		const { id } = req.params;
+		const findComment = await Comment.findOne({
+			where: { id: id },
+		});
+
+		if (!findComment) {
+			throw new Error('Commentaire introuvable');
+		}
+
+		if (findComment && findComment.PostId !== req.user.id) {
+			res.status(400).json({ error: error.message });
+		}
+
+		await findComment.update({
+			comment: req.body.comment,
+			userId: req.user.id,
+			postId: req.params.id
+		});
+
+		res.status(201).json({ message: 'Publication modifié avec succès' });
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
 };
 
 // Supprime commentaire
 exports.deleteComment = async (req, res, next) => {
 	try {
-	} catch (error) {}
+		const commentFound = await Comment.findOne({
+			attributes: ['id', 'PostId'],
+			where: { id: req.params.id },
+		});
+
+		if (!commentFound) {
+			throw new Error("Can't find your comment");
+		}
+
+		await Comment.destroy({
+			where: { id: req.params.id },
+		});
+		res.status(200).json({ message: 'Comment has been deleted ' });
+	} catch (error) {
+		res.status(400).json({ error: error.message });
+	}
 };
 
 module.exports = router;

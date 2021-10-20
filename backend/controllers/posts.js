@@ -34,10 +34,6 @@ exports.readAllPosts = async (req, res, next) => {
 		// Récupere les valeurs
 		const order = req.query.order;
 
-		console.log('fields');
-		console.log(fields);
-		console.log("order");
-		console.log(order);
 
 		const posts = await Post.findAll({
 			// si value = null order.split(url) divisera le "strings" à chaque (":") et les retournera en tableau qu'elle triera en ordre de création decroissant

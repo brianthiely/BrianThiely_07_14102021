@@ -9,8 +9,8 @@ router.post('/:id/comment', auth, commentCtrl.createComment);
 // Affiche commentaires
 router.get('/:id/comments', auth, commentCtrl.readComments);
 // Modification commentaire
-router.put('/:id/updatecomment=:id', auth, commentCtrl.updateComment);
+router.put('/:id/update/comment/:id', auth, commentCtrl.updateComment);
 // Suppression commentaire
-router.delete('/:id/deletecomment=:id', auth, commentCtrl.deleteComment);
+router.delete('/:id/delete/comment/:id', auth, commentCtrl.deleteComment);
 
 module.exports = router;
