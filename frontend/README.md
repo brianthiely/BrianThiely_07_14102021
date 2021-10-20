@@ -1,4 +1,4 @@
-# frontend-cli-app
+# frontend
 
 ## Project setup
 ```
