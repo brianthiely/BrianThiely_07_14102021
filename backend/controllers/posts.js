@@ -8,14 +8,18 @@ const fs = require('fs');
 exports.createPost = async (req, res, next) => {
 	try {
 		const userId = req.user.id;
-		
+		const params = req.body;
+
 		console.log("usersId");
 		console.log(userId);
+
+		console.log("params");
+		console.log(params);
 		
 		const newPost = await Post.create({
 			userId: userId,
-			content: req.body.content,
-			attachement: req.body.attachement,
+			content: params.content,
+			attachement: params.attachement,
 		});
 		
 		if (!newPost) {
