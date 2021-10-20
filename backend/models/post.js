@@ -3,6 +3,11 @@ module.exports = (sequelize, DataTypes) => {
 	class Post extends Model {
 		static associations(models) {
 			// create associations
+			models.Post.hasMany(
+				models.Comment,
+				{ foreignKey: "postId" },
+				{ onDelete: "cascade" }
+			);
             models.Post.belongsTo(models.User, {
                 foreignKey: {
                     allowNull: false

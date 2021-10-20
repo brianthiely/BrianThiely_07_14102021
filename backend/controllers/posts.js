@@ -7,17 +7,21 @@ const fs = require('fs');
 // Création publication
 exports.createPost = async (req, res, next) => {
 	try {
+		const userId = req.user.id;
+		
+		console.log("usersId");
+		console.log(userId);
+		
 		const newPost = await Post.create({
+			userId: userId,
 			content: req.body.content,
-			// attachement: req.body.attachement,
-			userId: req.user.id
-			
+			attachement: req.body.attachement,
 		});
-
+		
 		if (!newPost) {
 			throw new Error('Impossible de créer une publication sans texte');
 		}
-
+	
 		res.status(200).json({ message: 'Publication réussi', newPost });
 	} catch (error) {
 		res.status(400).json({ error: error.message });

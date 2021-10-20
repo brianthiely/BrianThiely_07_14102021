@@ -55,7 +55,6 @@ exports.register = async (req, res, next) => {
 			lastName: lastName,
 			role: role,
 			picture: picture,
-			isAdmin: 0,
 		});
 
 		if (!newUser) {
@@ -143,7 +142,6 @@ exports.updateUser = async (req, res, next) => {
 				firstName: req.body.firstName,
 				lastName: req.body.lastName,
 				role: req.body.role,
-				isAdmin: req.body.isAdmin,
 			},
 			{
 				where: { id: id },
@@ -167,7 +165,7 @@ exports.deleteUser = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const deleteResult = await User.destroy({ where: { id: id } });
-		res.status(200).json({ deleteResult });
+		res.status(200).json({ deleteResult: req.user.name });
 	} catch (error) {
 		next(error);
 	}
