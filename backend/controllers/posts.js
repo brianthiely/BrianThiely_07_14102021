@@ -9,17 +9,12 @@ exports.createPost = async (req, res, next) => {
 	try {
 		const userId = req.user.id;
 		const params = req.body;
+		const attachement = `${req.protocol}://${req.get('host')}/images/${params.attachement}`;
 
-		console.log("usersId");
-		console.log(userId);
-
-		console.log("params");
-		console.log(params);
-		
 		const newPost = await Post.create({
 			userId: userId,
 			content: params.content,
-			attachement: params.attachement,
+			attachement: attachement,
 		});
 		
 		if (!newPost) {
@@ -33,9 +28,9 @@ exports.createPost = async (req, res, next) => {
 };
 
 // Affiche publications
-exports.readAllPost = async (req, res, next) => {
+exports.readAllPosts = async (req, res, next) => {
 	try {
-		// Récupere les keys
+		// Récupere les champs
 		const fields = req.query.fields;
 		// Récupere les valeurs
 		const order = req.query.order;
@@ -43,12 +38,12 @@ exports.readAllPost = async (req, res, next) => {
 		const posts = await Post.findAll({
 			// si value = null order.split(url) divisera le "strings" à chaque (":") et les retournera en tableau qu'elle triera en ordre de création decroissant
 			order: [order != null ? order.split(':') : ['createdAt', 'DESC']],
-			// si tout les champs sont selectgionnés et ne sont pas null alors il seront trié dans un tableau
+			// si tout les champs sont selectionnés et ne sont pas null alors il seront trié dans un tableau
 			attributes: fields != '*' && fields != null ? fields.split(',') : null,
 			include: [
 				{
 					model: User,
-					attributes: ['firstName', 'lastName'],
+					attributes: ['isAdmin'],
 				},
 			],
 		});

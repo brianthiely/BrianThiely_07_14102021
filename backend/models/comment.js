@@ -1,7 +1,8 @@
+"use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
 	class Comment extends Model {
-		static associations(models) {
+		static associate(models) {
 			// create associations
 			models.Comment.belongsTo(models.User, {
 				foreignKey: {
@@ -21,8 +22,19 @@ module.exports = (sequelize, DataTypes) => {
 	}
 	Comment.init(
 		{
-			comment: DataTypes.STRING
+			comment: DataTypes.STRING,
+
+			userId: {
+				allowNull: false,
+				type: DataTypes.INTEGER
+			},
+			postId: {
+				allowNull: false,
+				type: DataTypes.INTEGER
+			},
 		},
+		
+
 		{
 			sequelize,
 			modelName: "Comment"

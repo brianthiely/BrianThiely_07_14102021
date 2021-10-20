@@ -6,13 +6,12 @@ const db = {};
 const bcrypt = require('bcrypt');
 const cryptojs = require('crypto-js');
 require('dotenv').config();
-const seq = new Sequelize('groupomania', 'root', `${process.env.PASSMYSQL}`, {
+const sequelize  = new Sequelize('groupomania', 'root', `${process.env.PASSMYSQL}`, {
 	host: 'localhost',
 	dialect: 'mysql',
 });
 
-seq
-	.authenticate()
+sequelize.authenticate()
 	.then(() => {
 		console.log('Connexion réussie BDD : groupomania');
 	})
@@ -25,7 +24,7 @@ seq
 // const cryptEmail = cryptojs
 // 	.HmacSHA512(email, process.env.SECRET_CRYPTOJS_TOKEN)
 // 	.toString(cryptojs.enc.Base64);
-// const adminUser = seq.query(
+// const adminUser = sequelize.query(
 // 	`INSERT INTO Users (id,email,password,firstName,lastName, role, picture, isAdmin,createdAt,updatedAt)
 //     	VALUES (DEFAULT,"${cryptEmail}", "${password}", "Marc", "Zuckerberg", "Chargé de communication", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLb2UcGv-n7cL7WBm47YL_BYcU_8FN4pAwtymihXD36YNvsZAUcVPCJtLHb-WalxHViro&usqp=CAU", 1, CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`
 // );
@@ -37,7 +36,7 @@ fs.readdirSync(__dirname)
 		);
 	})
 	.forEach(function (file) {
-		let model = require(path.join(__dirname, file))(seq, Sequelize.DataTypes);
+		let model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
 		db[model.name] = model;
 	});
 
@@ -46,7 +45,7 @@ Object.keys(db).forEach(function (modelName) {
 		db[modelName].associate(db);
 	}
 });
-db.sequelize = seq;
+db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;

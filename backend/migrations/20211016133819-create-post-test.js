@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		await queryInterface.createTable('Posts', {
@@ -15,10 +16,6 @@ module.exports = {
 					model: 'Users',
 					key: 'id',
 				},
-			},
-			isAdmin: {
-				allowNull: false,
-				type: Sequelize.BOOLEAN,
 			},
 			content: {
 				allowNull: false,

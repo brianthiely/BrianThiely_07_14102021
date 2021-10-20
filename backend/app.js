@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(morgan('combined', { stream: accessLogStream }))
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images',  express.static(path.join(__dirname, 'images')));
 routes(app);
 
 // catch 404 and forward to error handler
