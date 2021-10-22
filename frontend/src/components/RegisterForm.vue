@@ -1,115 +1,152 @@
 <template>
-	<div class="container">
-		<form @submit.prevent="register()">
-			<img alt="Groupomania Logo" src="../assets/logo/icon-above-font.svg" />
-			<nav>
-				<router-link to="/login">Se connecter</router-link> |
-				<router-link to="/register" class="active">S'inscrire</router-link>
-			</nav>
+	<div class="container h-100">
+		<div class="row d-flex justify-content-center align-items-center h-100">
+			<div class="col-lg-12 col-xl-11">
+				<div class="card text-black" style="border-radius: 25px;">
+					<div class="card-body p-md-5">
+						<div class="row justify-content-center">
+							<div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+								<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">
+									Créer mon compte
+								</p>
 
-			<label for="email"> Email:</label>
-			<input
-				id="email"
-				types="email"
-				name="email"
-				placeholder="Email"
-				required
-			/>
+								<form
+									@submit.prevent="register()"
+									method="post"
+									class="mx-1 mx-md-4"
+								>
+									<div class="d-flex flex-row align-items-center mb-4">
+										<i class="fas fa-user fa-lg me-3 fa-fw"></i>
+										<div class="form-outline flex-fill mb-0">
+											<label class="form-label" for="email">Adresse mail</label>
+											<input
+												v-model="form.email"
+												type="email"
+												name="email"
+												id="email"
+												class="form-control"
+												required
+											/>
+										</div>
+									</div>
 
-			<label for="password"> Mot de passe:</label>
-			<input
-				id="password"
-				types="password"
-				name="password"
-				placeholder="Mot de passe"
-				required
-			/>
+									<div class="d-flex flex-row align-items-center mb-4">
+										<i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+										<div class="form-outline flex-fill mb-0">
+											<label class="form-label" for="password"
+												>Mot de passe</label
+											>
+											<input
+												v-model="form.password"
+												type="password"
+												name="password"
+												id="password"
+												class="form-control"
+												required
+											/>
+										</div>
+									</div>
 
-			<label for="firstName"> Prénom:</label>
-			<input
-				id="firstName"
-				types="text"
-				name="firstName"
-				placeholder="Prénoms"
-				required
-			/>
+									<div class="d-flex flex-row align-items-center mb-4">
+										<i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+										<div class="form-outline flex-fill mb-0">
+											<label class="form-label" for="firstName">Prénom</label>
+											<input
+												v-model="form.firstName"
+												type="text"
+												id="firstName"
+												name="firstName"
+												class="form-control"
+												required
+											/>
+										</div>
+									</div>
 
-			<label for="lastName"> Nom:</label>
-			<input
-				id="lastName"
-				types="text"
-				name="lastName"
-				placeholder="Noms"
-				required
-			/>
+									<div class="d-flex flex-row align-items-center mb-4">
+										<i class="fas fa-key fa-lg me-3 fa-fw"></i>
+										<div class="form-outline flex-fill mb-0">
+											<label class="form-label" for="lastName">Nom</label>
+											<input
+												v-model="form.lastName"
+												type="text"
+												id="lastName"
+												name="lastName"
+												class="form-control"
+												required
+											/>
+										</div>
+									</div>
 
-			<label for="role"> Poste dans l'entreprise:</label>
-			<input
-				id="role"
-				types="text"
-				name="role"
-				placeholder="Chargé de communication"
-				required
-			/>
+									<div class="form-check d-flex justify-content-center mb-5">
+										<input
+											class="form-check-input me-2"
+											type="checkbox"
+											value=""
+											id="checkValidation"
+											required
+										/>
+										<label class="form-check-label" for="checkValidation">
+											J'accepte toutes les
+											<a href="#!">Conditions d'utilisation</a>
+										</label>
+									</div>
 
-			<label for="picture"> Choisissez une photo de profil:</label>
-			<input
-				id="picture"
-				types="file"
-				name="picture"
-				accept="image/png, image/jpeg"
-			/>
+									<div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+										<button type="submit" class="btn btn-primary btn-lg">
+											Je m'inscris
+										</button>
+									</div>
 
-			<div class="error-message">{{ message }}</div>
-
-			<button id="register-btn" type="submit">S'inscrire</button>
-		</form>
+									<p class="text-center text-muted mt-5 mb-0">
+										Vous avez déjà un compte ?
+										<router-link to="/login">Se connecter</router-link>
+									</p>
+								</form>
+							</div>
+							<div
+								class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2"
+							>
+								<img
+									src="../assets/logo/icon-above-font.svg"
+									class="img-fluid"
+									alt="Groupomania Logo"
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
 	name: 'RegisterForm',
 
 	data() {
 		return {
-			message: '',
+			form: {
+				email: '',
+				password: '',
+				firstName: '',
+				lastName: '',
+			},
 		};
 	},
 
 	methods: {
-		async register(req, res) {
-			const email = document.getElementById('email').value;
-			const password = document.getElementById('password').value;
-			const firstName = document.getElementById('firstName').value;
-			const lastName = document.getElementById('lastName').value;
-			const role = document.getElementById('role').value;
-
-			try {
-				if (!email || !password || !firstName || !lastName || !role) {
-					throw new Error('Veuillez renseigner tout les champs');
-				}
-
-                const userRegister = await fetch.post(`${this.$apiUrl}/auth/register`)
-
-                if(!userRegister) {
-                    throw new Error("Création de compte impossible")
-                }
-				res.status(201).json({message: "Compte créé !"})
-
-
-			} catch (error) {
-				res.status(400).json({ error: error.message });
-			}
+		register() {
+			axios.post(`${this.$apiUrl}/auth/register`)
+			.then(response => {
+				let data = response.data;
+				console.log(data);
+				this.data = alert(data.firstName + data.lastName + "a bien été ajouté !")
+			})
 		},
 	},
 };
 </script>
 
-<style>
-img {
-width: 100%;
-
-
-}
-</style>
+<style></style>

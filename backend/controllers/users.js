@@ -11,8 +11,7 @@ exports.register = async (req, res, next) => {
 	const password = params.password;
 	const firstName = params.firstName;
 	const lastName = params.lastName;
-	const role = params.role;
-	const picture = params.picture;
+
 
 	const emailRegex =
 		/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -20,7 +19,7 @@ exports.register = async (req, res, next) => {
 		/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,}$/;
 
 	try {
-		if (!email && !password && !firstName && !lastName && !role) {
+		if (!email && !password && !firstName && !lastName) {
 			throw new Error('Champs manquant');
 		}
 
@@ -53,8 +52,6 @@ exports.register = async (req, res, next) => {
 			password: await bcrypt.hash(password, 10),
 			firstName: firstName,
 			lastName: lastName,
-			role: role,
-			picture: picture,
 		});
 
 		if (!newUser) {
@@ -141,7 +138,6 @@ exports.updateUser = async (req, res, next) => {
 			{
 				firstName: req.body.firstName,
 				lastName: req.body.lastName,
-				role: req.body.role,
 			},
 			{
 				where: { id: id },
@@ -165,7 +161,7 @@ exports.deleteUser = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const deleteResult = await User.destroy({ where: { id: id } });
-		res.status(200).json({ deleteResult: req.user.name });
+		res.status(200).json({ deleteResult: deleteResult });
 	} catch (error) {
 		next(error);
 	}

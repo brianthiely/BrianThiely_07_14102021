@@ -43,7 +43,7 @@ exports.readAllPosts = async (req, res, next) => {
 			include: [
 				{
 					model: User,
-					attributes: ['firstName', 'lastName', 'role', 'isAdmin'],
+					attributes: ['firstName', 'lastName', 'isAdmin'],
 				},
 			],
 		});
@@ -73,7 +73,7 @@ exports.readPostsUser = async (req, res, next) => {
 			include: [
 				{
 					model: User,
-					attributes: ['firstName', 'lastName', 'role', 'isAdmin'],
+					attributes: ['firstName', 'lastName', 'isAdmin'],
 					where: { id: req.params.id },
 				},
 			],
