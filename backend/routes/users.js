@@ -4,11 +4,11 @@ const router = express.Router();
 const userCtrl = require('../controllers/users');
 
 // Création compte employé
-router.post('/register', userCtrl.register);
+router.post('/signup', userCtrl.signup);
 // Connexion compte employé
 router.post('/login', userCtrl.login);
 // Affiche le profil d'un employé
-router.get('/user/profile/:id', userCtrl.findUser);
+router.get('/user/profile/:id', userCtrl.getUser);
 // Modification compte employé
 router.put('/user/update/:id', userCtrl.updateUser);
 // Suppression compte employé

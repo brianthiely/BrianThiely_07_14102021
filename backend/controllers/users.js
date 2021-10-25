@@ -5,7 +5,7 @@ const cryptojs = require('crypto-js');
 require('dotenv').config();
 
 // Création compte utilisateur
-exports.register = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
 	const params = req.body;
 	const email = params.email;
 	const password = params.password;
@@ -114,7 +114,7 @@ exports.login = async (req, res, next) => {
 };
 
 // Affiche profil utilisateur
-exports.findUser = async (req, res, next) => {
+exports.getUser = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		console.log(id);

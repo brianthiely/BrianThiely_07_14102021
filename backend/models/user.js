@@ -32,14 +32,6 @@ module.exports = (sequelize, DataTypes) => {
 				unique: false,
 				required: true,
 			},
-			role: {
-				type: DataTypes.STRING,
-				allowNull: false,
-			},
-			picture: {
-				type: DataTypes.STRING,
-				allowNull: true,
-			},
 			isAdmin: {
 				type: DataTypes.BOOLEAN,
                 defaultValue: false
