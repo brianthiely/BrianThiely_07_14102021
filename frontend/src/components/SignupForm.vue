@@ -10,11 +10,7 @@
 									Créer mon compte
 								</p>
 
-								<form
-									@submit.prevent="register()"
-									method="post"
-									class="mx-1 mx-md-4"
-								>
+								<form class="mx-1 mx-md-4">
 									<div class="d-flex flex-row align-items-center mb-4">
 										<i class="fas fa-user fa-lg me-3 fa-fw"></i>
 										<div class="form-outline flex-fill mb-0">
@@ -92,7 +88,10 @@
 									</div>
 
 									<div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-										<button type="submit" class="btn btn-primary btn-lg">
+										<button
+											@click.prevent="signup()"
+											class="btn btn-primary btn-lg"
+										>
 											Je m'inscris
 										</button>
 									</div>
@@ -123,7 +122,7 @@
 <script>
 import axios from 'axios';
 export default {
-	name: 'RegisterForm',
+	name: 'Signup',
 
 	data() {
 		return {
@@ -137,16 +136,29 @@ export default {
 	},
 
 	methods: {
-		register() {
-			axios.post(`${this.$apiUrl}/auth/register`)
-			.then(response => {
-				let data = response.data;
-				console.log(data);
-				this.data = alert(data.firstName + data.lastName + "a bien été ajouté !")
-			})
+		async signup() {
+			try {
+				const res = await axios.post(`${this.$apiUrl}/auth/signup`, this.form);
+				if (res) {
+					const data = res.data;
+					console.log(data);
+					this.data = alert(
+						data.firstName + data.lastName + 'a bien été enregistré'
+					);
+					this.$router.replace({
+						name: 'Home',
+					});
+				}
+			} catch (error) {
+				console.log(error);
+			}
 		},
 	},
 };
 </script>
 
 <style></style>
+
+// axios.post(`${this.$apiUrl}/auth/signup`, this.form).then((response) => { //
+let data = response.data; // console.log(data); // this.data = alert( //
+data.firstName + data.lastName + 'a bien été ajouté !' // ); // }); // },
