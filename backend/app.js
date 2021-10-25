@@ -8,10 +8,12 @@ const morgan = require('morgan');
 const routes = require('./routes/index');
 const app = express();
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+const cors = require('cors')
 require('dotenv').config();
 
 
 app.use(express.json());
+app.use(cors())
 app.use(morgan('combined', { stream: accessLogStream }))
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
