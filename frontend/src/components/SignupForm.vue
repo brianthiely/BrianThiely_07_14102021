@@ -120,10 +120,18 @@
 </template>
 
 <script>
+import { onMounted } from 'vue';
 import axios from 'axios';
+import { apiUrl } from './../settings';
 export default {
 	name: 'Signup',
-
+	setup() {
+		// mounted
+		onMounted(() => {
+			console.log('apiUrl');
+			console.log(apiUrl);
+		});
+	},
 	data() {
 		return {
 			form: {
@@ -134,31 +142,22 @@ export default {
 			},
 		};
 	},
-
 	methods: {
-		async signup() {
-			try {
-				const res = await axios.post(`${this.$apiUrl}/auth/signup`, this.form);
-				if (res) {
-					const data = res.data;
-					console.log(data);
-					this.data = alert(
-						data.firstName + data.lastName + 'a bien été enregistré'
-					);
+		signup() {
+			axios
+				.post(`${apiUrl}/auth/signup/`, this.form)
+				.then(() => {
 					this.$router.replace({
 						name: 'Home',
 					});
-				}
-			} catch (error) {
-				console.log(error);
-			}
+				})
+				.catch((err) => {
+					console.log('err.response');
+					console.log(err.response);
+				});
 		},
 	},
 };
 </script>
 
 <style></style>
-
-// axios.post(`${this.$apiUrl}/auth/signup`, this.form).then((response) => { //
-let data = response.data; // console.log(data); // this.data = alert( //
-data.firstName + data.lastName + 'a bien été ajouté !' // ); // }); // },

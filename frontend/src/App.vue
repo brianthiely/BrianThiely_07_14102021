@@ -2,7 +2,20 @@
   <div id="nav">
   </div>
   <router-view/>
+  
 </template>
+
+<script>
+import { onMounted} from 'vue'
+export default {
+  setup() {
+     // mounted
+    onMounted(() => {
+      console.log("start APP")
+    })
+  },
+}
+</script>
 
 <style>
 #app {
