@@ -6,6 +6,7 @@ const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config')
 
 
+
 // Création publication
 router.post('/post/create',auth, multer,  postCtrl.createPost);
 // Affiche publications

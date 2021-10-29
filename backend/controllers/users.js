@@ -125,6 +125,16 @@ exports.getUser = async (req, res, next) => {
 	}
 };
 
+// Affiche tout les employé
+exports.getAllusers = async (req, res, next) => {
+	try {
+		const usersdata = await User.findAll();
+		res.send(usersdata);
+	} catch (error) {
+		next(error);
+	}
+};
+
 // Mise à jour compte utilisateur
 exports.updateUser = async (req, res, next) => {
 	try {

@@ -9,6 +9,8 @@ router.post('/signup', userCtrl.signup);
 router.post('/login', userCtrl.login);
 // Affiche le profil d'un employé
 router.get('/user/profile/:id', userCtrl.getUser);
+// Affiche tout les employés
+router.get('/users', userCtrl.getAllusers);
 // Modification compte employé
 router.put('/user/update/:id', userCtrl.updateUser);
 // Suppression compte employé
