@@ -13,7 +13,10 @@ export default {
 		Sidebar,
 	},
 	setup() {
-		return { sidebarWidth };
+		return { 
+			sidebarWidth,
+			mode: 'login',
+			};
 	},
 };
 </script>
@@ -33,7 +36,8 @@ export default {
 }
 
 body {
-	background-image: linear-gradient(62deg, white  0%, #bfc4dc 100%);
+	background-image: url(./assets/logo/icon.svg);
+	background-repeat: no-repeat;
 	display: flex;
 	align-items: center;
 	justify-content: center;
