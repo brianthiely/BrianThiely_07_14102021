@@ -40,7 +40,6 @@ body {
 	min-height: 100vh;
 	padding: 32px;
 }
-
 img {
 	max-width: 100%;
 	border-radius: 8px;
