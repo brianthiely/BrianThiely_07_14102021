@@ -7,7 +7,6 @@
     </h1>
 
     <SidebarLink to="/posts" icon="fas fa-home">Accueil</SidebarLink>
-    <SidebarLink to="/posts" icon="fas fa-home">Accueil</SidebarLink>
     <SidebarLink to="/profile" icon="fas fa-user">Mon profil</SidebarLink>
     <SidebarLink to="/settings" icon="fas fa-cogs">Paramètres</SidebarLink>
     <SidebarLink @click="logout()" to="/" icon="fas fa-sign-out-alt">Deconnexion</SidebarLink>
