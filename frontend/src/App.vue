@@ -1,41 +1,102 @@
 <template>
-  <div id="nav">
-  </div>
-  <router-view/>
-  
+	<Sidebar />
+	<div :style="{ 'margin-left': sidebarWidth }"></div>
+	<router-view></router-view>
 </template>
 
 <script>
-import { onMounted} from 'vue'
+import Sidebar from '@/components/sidebar/Sidebar';
+import { sidebarWidth } from '@/components/sidebar/state';
 export default {
-  setup() {
-     // mounted
-    onMounted(() => {
-      console.log("start APP")
-    })
-  },
-}
+	name: 'App',
+	components: {
+		Sidebar,
+	},
+	setup() {
+		return { sidebarWidth };
+	},
+};
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;800&display=swap');
+
+* {
+	font-family: 'Poppins', sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+	max-width: 100%;
 }
 
-#nav {
-  padding: 30px;
+body {
+	background-image: linear-gradient(62deg, white  0%, #bfc4dc 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	padding: 32px;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+img {
+	max-width: 100%;
+	border-radius: 8px;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.card {
+	max-width: 100%;
+	width: 540px;
+	background: white;
+	border-radius: 16px;
+	padding: 32px;
+}
+
+.card__title {
+	text-align: center;
+	font-weight: 800;
+}
+
+.card__subtitle {
+	text-align: center;
+	color: #666;
+	font-weight: 500;
+}
+
+.button {
+	background: #2196f3;
+	color: white;
+	border-radius: 8px;
+	font-weight: 800;
+	font-size: 15px;
+	border: none;
+	width: 100%;
+	padding: 16px;
+	transition: 0.4s background-color;
+}
+
+.card__action {
+	color: #2196f3;
+	text-decoration: underline;
+}
+
+.card__action:hover {
+	cursor: pointer;
+}
+
+.button:hover {
+	cursor: pointer;
+	background: #1976d2;
+}
+
+.button--disabled {
+	background: #cecece;
+	color: #ececec;
+}
+.button--disabled:hover {
+	cursor: not-allowed;
+	background: #cecece;
 }
 </style>
