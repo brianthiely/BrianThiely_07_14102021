@@ -1,5 +1,4 @@
 <template>
-	
 	<router-view></router-view>
 </template>
 
@@ -29,15 +28,6 @@ export default {
 	max-width: 100%;
 }
 
-body {
-	background-image: url(./assets/logo/icon.svg);
-	background-repeat: no-repeat;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-height: 100vh;
-	padding: 32px;
-}
 img {
 	max-width: 100%;
 	border-radius: 8px;
