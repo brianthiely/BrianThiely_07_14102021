@@ -1,7 +1,7 @@
 <template>
 	<div class="card">
 		<h1 class="card__title">Espace Perso</h1>
-		<p class="card__subtitle">Voilà donc qui je suis...</p>
+		<p class="card__subtitle">Informations</p>
 		<p>{{ user.firstName }} {{ user.lastName }} {{ user.email }}</p>
 		<!-- <img :src="user.photo"/> -->
 		

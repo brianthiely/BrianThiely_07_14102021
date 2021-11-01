@@ -48,12 +48,7 @@ export default {
       lastName: '',
     }
   },
-  mounted: function () {
-    if (this.$store.state.user.id != -1) {
-      this.$router.push('/profile');
-      return ;
-    }
-  },
+  
   computed: {
     validatedFields: function () {
       if (this.mode == 'create') {
