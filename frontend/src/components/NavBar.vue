@@ -30,7 +30,7 @@ export default {
 
 	methods: {
 		logout: function() {
-			this.$store.commit('logout');
+			this.$store.dispatch('auth/logout');
 			this.$router.push('/');
 		},
 	},

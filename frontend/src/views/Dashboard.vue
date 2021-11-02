@@ -11,14 +11,13 @@
 					placeholder="Quelque chose à nous partager? (280 caractères max.)"
 				></textarea>
 				<input
-					@change="onFileChange(e)"
 					type="file"
 					class="form-control"
 					id="attachement"
 				/>
 				<div class="mar-top clearfix">
 					<button
-						@click="createPost()"
+						@click.prevent="createPost()"
 						class="btn btn-sm btn-primary pull-right"
 						type="submit"
 					>
@@ -29,10 +28,9 @@
 
 			<ul>
 				<li v-for="post in posts" :key="post.id">
-					{{ post.content }} 	{{ post.attachement }}
+					{{ post.content }} {{ post.attachement }}
 				</li>
 			</ul>
-			
 		</div>
 
 		<div class="col-3">
@@ -69,32 +67,20 @@ export default {
 		// },
 	},
 	methods: {
-		// onFileChange: function(e) {
-		// 	const files = e.target.files;
-		// 	// let filename = files[0].name;
-		// 	const fileReader = new FileReader();
-		// 	fileReader.addEventListener('load', () => {
-		// 		this.attachement = fileReader.result;
-		// 	});
-		// 	fileReader.readAsDataURL(files[0]);
-		// 	this.image = files[0];
-		// },
-
-		// createPost: function() {
-		// 	this.$store
-		// 		.dispatch('dashboard/createPost', {
-		// 			content: this.content,
-		// 			attachement: this.attachement,
-		// 		})
-		// 		.then(
-		// 			() => {
-		// 				this.$store.dispatch('dashboard/getAllPosts');
-		// 			},
-		// 			function(error) {
-		// 				console.log(error);
-		// 			}
-		// 		);
-		// },
+		createPost: function() {
+			console.log("OK");
+			// this.UserService.createPost(), {
+			// 		content: this.content,
+			// 		attachement: this.attachement,
+			// 	}.then(
+			// 		() => {
+			// 			this.getAllPosts();
+			// 		},
+			// 		function(error) {
+			// 			console.log(error);
+			// 		}
+			// 	);
+		},
 		async getAllPosts() {
 			const response = await UserService.getAllPosts();
 			return this.posts = response.data;
