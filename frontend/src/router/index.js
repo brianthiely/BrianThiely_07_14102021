@@ -1,7 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
-import Login from "@/views/Login.vue";
-import Profile from "@/views/Profile.vue";
-import Dashboard from "@/views/Dashboard.vue";
+import Login from "../views/Login";
+import Dashboard from "../views/Dashboard";
 
 
 const routes = [
@@ -10,16 +9,11 @@ const routes = [
     path: '/', 
     component: Login,
   },
-  { 
-    name: 'profile',
-    path: '/profile', 
-    component: Profile, 
-    props:true 
-  },
+ 
   { 
     name: 'dashboard',
     path: '/dashboard', 
-    component: Dashboard, 
+    component:  Dashboard
   },
 ]
 
@@ -27,5 +21,17 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+
+router.beforeEach((to, from, next) => {
+  const publicPages = ['/'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('user');
+  if (authRequired && !loggedIn) {
+    next('/');
+  } else {
+    next();
+  }
+});
 
 export default router;

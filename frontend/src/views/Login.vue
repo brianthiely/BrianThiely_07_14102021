@@ -127,7 +127,7 @@ export default {
 				})
 				.then(
 					function() {
-						self.$router.push('/posts');
+						self.$router.push('/dashboard');
 					},
 					function(error) {
 						console.log(error);
@@ -136,8 +136,7 @@ export default {
 		},
 		createAccount: function() {
 			const self = this;
-			this.$store
-				.dispatch('createAccount', {
+			this.$store.dispatch('auth/register', {
 					email: this.email,
 					password: this.password,
 					firstName: this.firstName,
@@ -158,12 +157,12 @@ export default {
 
 <style scoped>
 .login-wrapper {
-  display: flex;
+	display: flex;
 	align-items: center;
 	justify-content: center;
 	min-height: 100vh;
 	padding: 32px;
-  background-image: url(../assets/logo/icon.svg);
+	background-image: url(../assets/logo/icon.svg);
 	background-repeat: no-repeat;
 }
 
@@ -188,5 +187,5 @@ export default {
 
 .form-row__input::placeholder {
 	color: #aaaaaa;
-}</style
->>
+}
+</style>
