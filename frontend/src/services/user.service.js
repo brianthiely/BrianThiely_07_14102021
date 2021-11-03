@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:3000/groupomania';
 
 class UserService {
   createPost() {
-    return axios.get(API_URL + '/post/create', { headers: authHeader() });
+    return axios.post(API_URL + '/post/create');
   }
 
   getAllPosts() {

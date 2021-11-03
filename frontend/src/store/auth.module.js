@@ -1,4 +1,5 @@
 import AuthService from '../services/auth.service';
+import UserService from '../services/user.service';
 
 
 const user = JSON.parse(localStorage.getItem('user'));
@@ -38,6 +39,17 @@ export const auth = {
         }
       );
     },
+
+    createPost() {
+      return UserService.createPost().then(
+        response => {
+          return Promise.resolve(response.data)
+        },
+        error => {
+          return Promise.reject(error)
+        }
+      )
+    }
   },
   mutations: {
     loginSuccess(state, user) {

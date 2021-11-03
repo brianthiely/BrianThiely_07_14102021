@@ -120,8 +120,7 @@ export default {
 		},
 		login: function() {
 			const self = this;
-			this.$store
-				.dispatch('auth/login', {
+			this.$store.dispatch('auth/login', {
 					email: this.email,
 					password: this.password,
 				})

@@ -2,7 +2,7 @@
 	<NavBar />
 	<div class="row p-3">
 		<div class="col-9">
-			<form class="container">
+			<form class="container mb-5">
 				<textarea
 					v-model="content"
 					maxlength="280"
@@ -10,25 +10,30 @@
 					rows="2"
 					placeholder="Quelque chose à nous partager? (280 caractères max.)"
 				></textarea>
-				<input
-					type="file"
-					class="form-control"
-					id="attachement"
-				/>
+				<input type="file" class="form-control" id="attachement" />
 				<div class="mar-top clearfix">
 					<button
-						@click.prevent="createPost()"
+						@click="createPost()"
 						class="btn btn-sm btn-primary pull-right"
-						type="submit"
 					>
 						<i class="fas fa-pencil-alt"></i> Partager
 					</button>
 				</div>
 			</form>
 
-			<ul>
-				<li v-for="post in posts" :key="post.id">
-					{{ post.content }} {{ post.attachement }}
+			<ul class="d-flex flex-column align-items-center">
+				<li v-for="post in posts" :key="post.id" class="card mb-5 text-center">
+					<div class="card-header">Quote</div>
+					<div class="card-body">
+						<blockquote class="blockquote mb-0">
+							<p>
+								{{post.content}}
+							</p>
+							<footer class="blockquote-footer">
+								Someone famous in <cite title="Source Title"></cite>
+							</footer>
+						</blockquote>
+					</div>
 				</li>
 			</ul>
 		</div>
@@ -42,6 +47,10 @@
 <script>
 import NavBar from '../components/NavBar.vue';
 import UserService from '../services/user.service';
+// import authHeader from '../services/auth-header';
+import axios from 'axios';
+const API_URL = 'http://localhost:3000/groupomania';
+const user = JSON.parse(localStorage.getItem('user'));
 
 export default {
 	name: 'Dashboard',
@@ -52,14 +61,12 @@ export default {
 		return {
 			posts: [],
 			content: '',
-			attachement: '',
 		};
 	},
 	mounted() {
 		// if (!this.currentUser) {
 		// }
 		this.getAllPosts();
-
 	},
 	computed: {
 		// currentUser() {
@@ -68,22 +75,23 @@ export default {
 	},
 	methods: {
 		createPost: function() {
-			console.log("OK");
-			// this.UserService.createPost(), {
-			// 		content: this.content,
-			// 		attachement: this.attachement,
-			// 	}.then(
-			// 		() => {
-			// 			this.getAllPosts();
-			// 		},
-			// 		function(error) {
-			// 			console.log(error);
-			// 		}
-			// 	);
+			const dataContent = this.content;
+			const dataAttachement = document.getElementById('attachement').files[0];
+			axios.post(
+				API_URL + '/post/create',
+				{ content: dataContent, attachement: dataAttachement },
+				{
+					headers: {
+						Authorization: 'Bearer ' + user.tokenConnection,
+					},
+				}
+			);
+			console.log(dataAttachement);
 		},
+
 		async getAllPosts() {
 			const response = await UserService.getAllPosts();
-			return this.posts = response.data;
+			return (this.posts = response.data);
 		},
 	},
 };
