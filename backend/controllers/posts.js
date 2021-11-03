@@ -8,7 +8,7 @@ exports.createPost = async (req, res, next) => {
 	try {
 		const userId = req.user.id;
 		const params = req.body;
-		const attachement = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+		const attachement = `${req.protocol}://${req.get('host')}/backend/images/${req.file.filename}`;
 
 		const newPost = await Post.create({
 			userId: userId,

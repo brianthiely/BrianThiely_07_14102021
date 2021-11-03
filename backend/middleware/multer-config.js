@@ -10,11 +10,11 @@ const MIME_TYPES = {
 const storage = multer.diskStorage({
     // Func dest indique d'enregistrer les photos dans le dossier images
 	destination: (req, file, callback) => {
-		callback(null, 'images');
+		callback(null, './images');
 	},
     // Func filename indique indique d'utiliser le noms d'origine, remplacer les espace par underscore et ajouter extension appropriers
 	filename: (req, file, callback) => {
-		const name = file.originalname.split(' ').join('_');
+		const name = file.originalname.replace(/\.[^/.]+$/, "");
 		const extension = MIME_TYPES[file.mimetype];
 		callback(null, name + Date.now() + '.' + extension);
 	},
