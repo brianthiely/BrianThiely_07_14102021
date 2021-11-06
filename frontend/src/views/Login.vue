@@ -127,7 +127,7 @@ export default {
 				})
 				.then(
 					function() {
-						self.$router.push('/posts');
+						self.$router.push('/dashboard');
 					},
 					function(error) {
 						console.log(error);
