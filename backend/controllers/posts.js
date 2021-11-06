@@ -8,12 +8,12 @@ exports.createPost = async (req, res, next) => {
 	try {
 		const userId = req.user.id;
 		const params = req.body;
-		const attachement = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
+		// const attachement = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
 
 		const newPost = await Post.create({
 			userId: userId,
 			content: params.content,
-			attachement: attachement,
+			// attachement: attachement,
 		});
 
 		if (!newPost) {
@@ -57,7 +57,7 @@ exports.readAllPosts = async (req, res, next) => {
 	}
 };
 
-// Affiche publications profil user
+// Affiche les publications user
 exports.readPostsUser = async (req, res, next) => {
 	try {
 		// Récupere les keys
