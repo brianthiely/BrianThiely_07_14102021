@@ -6,7 +6,7 @@ const API_URL = 'http://localhost:3000/groupomania';
 
 class UserService {
   createPost() {
-    return axios.get(API_URL + '/post/create', { headers: authHeader() });
+    return axios.post(API_URL + '/post/create', { headers: authHeader() });
   }
 
   getAllPosts() {
@@ -19,6 +19,14 @@ class UserService {
 
   getUser() {
     return axios.get(API_URL + '/user/profile/' + user.id, { headers: authHeader() })
+  }
+
+  getPostsUser() {
+    return axios.get(API_URL + '/post/' + user.id, { headers: authHeader() })
+  }
+
+  deleteAccount() {
+    return axios.delete(API_URL + '/user/delete/' + user.id, { headers: authHeader() })
   }
 }
 

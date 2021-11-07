@@ -24,12 +24,14 @@
 			<div class="form-row" v-if="mode == 'create'">
 				<input
 					v-model="firstName"
+					name="firstName"
 					class="form-row__input"
 					type="text"
 					placeholder="Prénom"
 				/>
 				<input
 					v-model="lastName"
+					name="lastName"
 					class="form-row__input"
 					type="text"
 					placeholder="Nom"
@@ -137,7 +139,7 @@ export default {
 		createAccount: function() {
 			const self = this;
 			this.$store
-				.dispatch('createAccount', {
+				.dispatch('auth/register', {
 					email: this.email,
 					password: this.password,
 					firstName: this.firstName,

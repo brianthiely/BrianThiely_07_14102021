@@ -19,12 +19,13 @@ export default {
 		return {
 		};
 	},
-	mounted() {
+	mounted(
+		
+	) {
 		
 	},
 	computed: {},
 	methods: {
-		
 	},
 };
 </script>

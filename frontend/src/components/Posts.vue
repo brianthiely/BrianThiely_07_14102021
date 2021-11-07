@@ -78,9 +78,6 @@ export default {
 		createPost() {
 			if (this.content != '') {
 				try {
-					// const dataAttachement = document.getElementById('attachement')
-					// 	.files[0];
-					// this.attachement = dataAttachement;
 					axios.post(
 						API_URL + '/post/create',
 						{ content: this.content },

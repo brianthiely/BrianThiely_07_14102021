@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import UserService from '../services/user.service';
 export default {
 	name: 'NavBar',
 
@@ -39,9 +38,8 @@ export default {
 			this.$store.dispatch('auth/logout');
 			this.$router.push('/');
 		},
-		async getUser() {
-			const response = await UserService.getUser();
-			return (this.user = response.data);
+		getUser() {
+			this.$router.push('/profile')
 		},
 	},
 };
