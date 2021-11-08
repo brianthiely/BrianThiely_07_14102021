@@ -103,6 +103,7 @@ exports.login = async (req, res, next) => {
 		res.status(200).json({
 			id: user.id,
 			tokenConnection,
+			admin: user.isAdmin
 		});
 
 		if (!tokenConnection) {
