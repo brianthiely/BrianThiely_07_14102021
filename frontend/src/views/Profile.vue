@@ -41,7 +41,7 @@
 						<h5 class="mb-3">Derniers posts</h5>
 					</div>
 					<div class="row d-flex flex-column">
-						<div v-for="post in posts" :key="post.id" class="mb-5">
+						<div v-for="post in filterPostID" :key="post.id" class="mb-5">
 							<div class="post-container">
 								<div class="post-detail">
 									<div class="user-info">
@@ -60,10 +60,13 @@
 									</div>
 
 									<p class="text-muted">
-										{{ post.createdAt }}
+										{{ dateFormat(post.createdAt) }}
 									</p>
 									<div class="divider py-1 bg-dark mb-5"></div>
 								</div>
+								<button  @click="deletePost()">
+									Supprimer le post 
+								</button>
 							</div>
 						</div>
 					</div>
@@ -76,6 +79,9 @@
 <script>
 import UserService from '../services/user.service';
 import NavBar from '../components/NavBar.vue';
+// import axios from 'axios';
+// import authHeader from '../services/auth-header';
+// const API_URL = 'http://localhost:3000/groupomania';
 export default {
 	name: 'Profile',
 	components: {
@@ -89,16 +95,29 @@ export default {
 	},
 	mounted() {
 		this.getUser();
-		this.getPostsUser()
+		this.getPostsUser();
+		this.deletePost();
+	},
+	computed: {
+		filterPostID() {
+			return this.posts.filter((post) => {
+				return post.id;
+			});
+		},
 	},
 
 	methods: {
-		deleteAccount() {
-			console.log(this.user.userFind.isAdmin);
-			// UserService.deleteAccount();
-			// this.$router.push('/')
-},
-
+		dateFormat(date) {
+			const event = new Date(date);
+			const options = {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+				hour: 'numeric',
+				minute: 'numeric',
+			};
+			return event.toLocaleDateString('fr-FR', options);
+		},
 		async getUser() {
 			const response = await UserService.getUser();
 			return (this.user = response.data);
@@ -107,6 +126,14 @@ export default {
 		async getPostsUser() {
 			const response = await UserService.getPostsUser();
 			return (this.posts = response.data);
+		},
+
+		deleteAccount() {
+			// UserService.deleteAccount();
+			// this.$router.push('/')
+		},
+		deletePost() {
+			// console.log(tpost.id);
 		},
 	},
 };

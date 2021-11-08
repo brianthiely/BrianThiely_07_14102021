@@ -44,13 +44,10 @@
 						<div class="divider py-1 bg-success"></div>
 
 						<p class="text-muted">
-							{{ post.createdAt }}
+							{{ dateFormat(post.createdAt) }}
 						</p>
 					</div>
-					<button
-						v-if="user.id == post.UserId || user.admin == true"
-						@click="deletePost()"
-					>
+					<button v-if="user.admin == true" @click="deletePost()">
 						Supprimer
 					</button>
 				</div>
@@ -76,8 +73,6 @@ export default {
 	},
 	beforeMount() {
 		this.getAllPosts();
-	},
-	mounted() {
 		this.user = user;
 	},
 	computed: {},
@@ -105,9 +100,14 @@ export default {
 			return (this.posts = response.data);
 		},
 		deletePost() {
-			console.log("OK");
-			
+			console.log('OK');
+			console.log(this.posts.User.id);
 		},
+		dateFormat(date){
+            const event = new Date(date);
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+            return event.toLocaleDateString('fr-FR', options);
+        }
 	},
 };
 </script>

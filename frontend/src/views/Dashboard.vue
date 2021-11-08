@@ -15,17 +15,5 @@ export default {
 		NavBar,
 		Posts,
 	},
-	data() {
-		return {
-		};
-	},
-	mounted(
-		
-	) {
-		
-	},
-	computed: {},
-	methods: {
-	},
 };
 </script>
