@@ -62,7 +62,7 @@
 									<p class="text-muted">
 										{{ post.createdAt }}
 									</p>
-									<div class="divider py-1 bg-dark"></div>
+									<div class="divider py-1 bg-dark mb-5"></div>
 								</div>
 							</div>
 						</div>
@@ -89,12 +89,13 @@ export default {
 	},
 	mounted() {
 		this.getUser();
-		this.getPostsUser();
+		this.getPostsUser()
 	},
 
 	methods: {
 		deleteAccount() {
-			UserService.deleteAccount();
+			console.log(this.user.userFind.isAdmin);
+			// UserService.deleteAccount();
 			// this.$router.push('/')
 },
 

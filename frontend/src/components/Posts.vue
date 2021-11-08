@@ -20,15 +20,12 @@
 
 		<div class="col-10">
 			<span class="font-weight-bold">Fil d'actualité</span><br /><br />
-			<div v-for="post in posts" :key="post.id" class="post-content d-flex">
-				<div class="post-container">
+			<div v-for="post in posts" :key="post.id" class="post-content">
+				<div
+					class="post-container  d-flex justify-content-around  align-items-center"
+				>
 					<!-- FEATURE PICTURE -->
-					<img
-						src="https://cdn-icons-png.flaticon.com/512/1177/1177568.png"
-						alt="user"
-						class="profile-photo-md pull-left"
-					/>
-					<div class="post-detail">
+					<div>
 						<div class="user-info">
 							<h5>
 								<!-- BINDER PROFIL USER -->
@@ -37,7 +34,8 @@
 								>
 							</h5>
 						</div>
-
+					</div>
+					<div class="post-detail">
 						<div class="post-text">
 							<p>
 								{{ post.content }}
@@ -49,6 +47,12 @@
 							{{ post.createdAt }}
 						</p>
 					</div>
+					<button
+						v-if="user.id == post.UserId || user.admin == true"
+						@click="deletePost()"
+					>
+						Supprimer
+					</button>
 				</div>
 			</div>
 		</div>
@@ -70,8 +74,11 @@ export default {
 			attachement: '',
 		};
 	},
-	mounted() {
+	beforeMount() {
 		this.getAllPosts();
+	},
+	mounted() {
+		this.user = user;
 	},
 	computed: {},
 	methods: {
@@ -96,6 +103,10 @@ export default {
 		async getAllPosts() {
 			const response = await UserService.getAllPosts();
 			return (this.posts = response.data);
+		},
+		deletePost() {
+			console.log("OK");
+			
 		},
 	},
 };
