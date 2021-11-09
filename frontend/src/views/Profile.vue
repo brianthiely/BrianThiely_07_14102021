@@ -41,7 +41,7 @@
 						<h5 class="mb-3">Derniers posts</h5>
 					</div>
 					<div class="row d-flex flex-column">
-						<div v-for="post in filterPostID" :key="post.id" class="mb-5">
+						<div v-for="post in posts" :key="post.id" class="mb-5">
 							<div class="post-container">
 								<div class="post-detail">
 									<div class="user-info">
@@ -96,14 +96,6 @@ export default {
 	mounted() {
 		this.getUser();
 		this.getPostsUser();
-		this.deletePost();
-	},
-	computed: {
-		filterPostID() {
-			return this.posts.filter((post) => {
-				return post.id;
-			});
-		},
 	},
 
 	methods: {
@@ -128,13 +120,10 @@ export default {
 			return (this.posts = response.data);
 		},
 
-		deleteAccount() {
-			// UserService.deleteAccount();
-			// this.$router.push('/')
-		},
-		deletePost() {
-			// console.log(tpost.id);
-		},
+		// deleteAccount() {
+			
+		// },
+		// deletePost() {},
 	},
 };
 </script>

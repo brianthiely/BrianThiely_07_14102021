@@ -1,7 +1,6 @@
 import axios from 'axios';
 import authHeader from './auth-header';
-let user = JSON.parse(localStorage.getItem('user'));
-
+const user = JSON.parse(localStorage.getItem('user'));
 const API_URL = 'http://localhost:3000/groupomania';
 
 class UserService {

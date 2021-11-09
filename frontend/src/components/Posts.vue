@@ -59,21 +59,21 @@
 <script>
 import UserService from '../services/user.service';
 import axios from 'axios';
+import { user } from '../services/auth-header';
 const API_URL = 'http://localhost:3000/groupomania';
-const user = JSON.parse(localStorage.getItem('user'));
 
 export default {
 	name: 'Posts',
 	data() {
 		return {
 			posts: [],
+			user: {},
 			content: '',
 			attachement: '',
 		};
 	},
 	beforeMount() {
 		this.getAllPosts();
-		this.user = user;
 	},
 	computed: {},
 	methods: {
