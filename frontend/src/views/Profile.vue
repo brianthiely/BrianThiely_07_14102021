@@ -5,11 +5,7 @@
 			<!-- Profile widget -->
 			<div class="bg-white shadow rounded overflow-hidden">
 				<div class="px-4 pt-0 pb-4 cover">
-					<div
-						v-for="userFind in user"
-						:key="userFind.id"
-						class="media align-items-end profile-head"
-					>
+					<div class="media align-items-end profile-head">
 						<div class="profile mr-3">
 							<img
 								src="https://cdn-icons-png.flaticon.com/512/1177/1177568.png"
@@ -26,11 +22,11 @@
 						</div>
 						<div class="media-body mb-5 text-white">
 							<h4 class="mt-0 mb-0">
-								{{ userFind.firstName }} {{ userFind.lastName }}
+								{{ user.firstName }} {{ user.lastName }}
 							</h4>
 							<!-- feature role -->
 							<p class="small mb-4">
-								{{ userFind.role }}
+								{{ user.role }}
 							</p>
 						</div>
 					</div>
@@ -64,8 +60,8 @@
 									</p>
 									<div class="divider py-1 bg-dark mb-5"></div>
 								</div>
-								<button  @click="deletePost()">
-									Supprimer le post 
+								<button @click="deletePost()">
+									Supprimer le post
 								</button>
 							</div>
 						</div>
@@ -79,9 +75,7 @@
 <script>
 import UserService from '../services/user.service';
 import NavBar from '../components/NavBar.vue';
-// import axios from 'axios';
-// import authHeader from '../services/auth-header';
-// const API_URL = 'http://localhost:3000/groupomania';
+
 export default {
 	name: 'Profile',
 	components: {
@@ -89,7 +83,7 @@ export default {
 	},
 	data() {
 		return {
-			user: {},
+			user: this.$store.state.auth.user,
 			posts: [],
 		};
 	},
@@ -111,19 +105,21 @@ export default {
 			return event.toLocaleDateString('fr-FR', options);
 		},
 		async getUser() {
-			const response = await UserService.getUser();
-			return (this.user = response.data);
+			const response = await UserService.getUser(this.user.id);
+			console.log(response);
 		},
 
 		async getPostsUser() {
-			const response = await UserService.getPostsUser();
+			const response = await UserService.getPostsUser(this.user.id);
 			return (this.posts = response.data);
 		},
 
-		// deleteAccount() {
-			
-		// },
-		// deletePost() {},
+		async deleteAccount() {
+			const response = await UserService.deleteAccount(this.user.id);
+			console.log(response);
+			this.$router.push('/')
+		},
+	
 	},
 };
 </script>

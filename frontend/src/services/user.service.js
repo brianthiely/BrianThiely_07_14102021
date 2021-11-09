@@ -1,6 +1,5 @@
 import axios from 'axios';
 import authHeader from './auth-header';
-const user = JSON.parse(localStorage.getItem('user'));
 const API_URL = 'http://localhost:3000/groupomania';
 
 class UserService {
@@ -10,8 +9,8 @@ class UserService {
   getAllPosts() {
     return axios.get(API_URL + '/posts', { headers: authHeader() });
   }
-  getPostsUser() {
-    return axios.get(API_URL + '/post/' + user.id, { headers: authHeader() })
+  getPostsUser(id) {
+    return axios.get(API_URL + '/post/' + id, { headers: authHeader() })
   }
   deletePost() {
     // return axios.delete(API_URL + '/post/delete/' + post.id, { headers: authHeader() })
@@ -20,11 +19,11 @@ class UserService {
   getAllUsers() {
     return axios.get(API_URL + '/users', { headers: authHeader() })
   }
-  getUser() {
-    return axios.get(API_URL + '/user/profile/' + user.id, { headers: authHeader() })
+  getUser(id) {
+    return axios.get(API_URL + '/user/profile/' + id, { headers: authHeader() })
   }
-  deleteAccount() {
-    return axios.delete(API_URL + '/user/delete/' + user.id, { headers: authHeader() })
+  deleteAccount(id) {
+    return axios.delete(API_URL + '/user/delete/' + id, { headers: authHeader() })
   }
 }
 

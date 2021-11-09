@@ -47,7 +47,7 @@
 							{{ dateFormat(post.createdAt) }}
 						</p>
 					</div>
-					<button v-if="user.admin == true" @click="deletePost()">
+					<button v-if="user.admin === true" @click="deletePost()">
 						Supprimer
 					</button>
 				</div>
@@ -59,7 +59,8 @@
 <script>
 import UserService from '../services/user.service';
 import axios from 'axios';
-import { user } from '../services/auth-header';
+// const user = JSON.parse(localStorage.getItem('user'));
+// import { mapState } from '../store/auth.module'
 const API_URL = 'http://localhost:3000/groupomania';
 
 export default {
@@ -67,15 +68,16 @@ export default {
 	data() {
 		return {
 			posts: [],
-			user: {},
+			user: this.$store.state.auth.user,
 			content: '',
 			attachement: '',
+			
 		};
 	},
 	beforeMount() {
 		this.getAllPosts();
 	},
-	computed: {},
+	
 	methods: {
 		createPost() {
 			if (this.content != '') {
@@ -85,7 +87,7 @@ export default {
 						{ content: this.content },
 						{
 							headers: {
-								Authorization: 'Bearer ' + user.tokenConnection,
+								Authorization: 'Bearer ' + this.$store.state.auth.user.tokenConnection,
 							},
 						}
 					);
@@ -96,6 +98,7 @@ export default {
 		},
 
 		async getAllPosts() {
+			console.log();
 			const response = await UserService.getAllPosts();
 			return (this.posts = response.data);
 		},
