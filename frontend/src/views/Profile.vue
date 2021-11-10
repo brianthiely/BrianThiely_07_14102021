@@ -20,7 +20,7 @@
 								Supprimer mon compte
 							</button>
 						</div>
-						<div class="media-body mb-5 text-white">
+						<div class="media-body mb-5 text-dark">
 							<h4 class="mt-0 mb-0">
 								{{ user.firstName }} {{ user.lastName }}
 							</h4>
@@ -70,21 +70,26 @@
 			</div>
 		</div>
 	</div>
+	<Footer />
 </template>
 
 <script>
 import UserService from '../services/user.service';
 import NavBar from '../components/NavBar.vue';
+import Footer from '../components/Footer.vue';
 
 export default {
 	name: 'Profile',
 	components: {
 		NavBar,
+		Footer,
 	},
+
 	data() {
 		return {
 			user: this.$store.state.auth.user,
 			posts: [],
+			post: {},
 		};
 	},
 	mounted() {
@@ -106,20 +111,37 @@ export default {
 		},
 		async getUser() {
 			const response = await UserService.getUser(this.user.id);
+			console.log('response GETUSER');
 			console.log(response);
 		},
 
 		async getPostsUser() {
+			console.log('GET POST THIS.POST');
+			console.log(this.post);
 			const response = await UserService.getPostsUser(this.user.id);
 			return (this.posts = response.data);
 		},
 
 		async deleteAccount() {
 			const response = await UserService.deleteAccount(this.user.id);
+			console.log("response DELETE ACCOUNT");
 			console.log(response);
-			this.$router.push('/')
+			this.$router.push('/');
 		},
-	
+
+		async deletePost() {
+			const data = this.posts.filter((post) => {
+				return (this.post = post.id);
+			});
+			console.log('data DELETE');
+			console.log(data);
+			const response = await UserService.deletePost(this.post);
+			this.$router.push('/profile');
+			console.log('response DELETE');
+			console.log(response);
+			console.log('response delete THIS.POST');
+			console.log(this.post);
+		},
 	},
 };
 </script>
@@ -130,8 +152,9 @@ export default {
 }
 
 .cover {
-	background-image: url(https://images.unsplash.com/photo-1530305408560-82d13781b33a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80);
-	background-size: cover;
+	background-image: url(../assets/logo/icon.svg);
+	background-position: center;
+	background-size: contain;
 	background-repeat: no-repeat;
 }
 </style>

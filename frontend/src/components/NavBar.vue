@@ -1,7 +1,14 @@
 <template>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-red mb-5">
 		<div class="container">
-			<a class="navbar-brand col-9" href="/dashboard">Groupomania</a>
+			<a class="navbar-brand col-9" href="/dashboard">
+				<img
+					width="200"
+					class="imglogo"
+					src="../assets/logo/icon-left-font-monochrome-white.png"
+					alt="Logo Groupomania"
+				/>
+			</a>
 			<button
 				class="navbar-toggler"
 				type="button"
@@ -39,7 +46,7 @@ export default {
 			this.$router.push('/');
 		},
 		getUser() {
-			this.$router.push('/profile')
+			this.$router.push('/profile');
 		},
 	},
 };

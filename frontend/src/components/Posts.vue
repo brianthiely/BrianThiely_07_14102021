@@ -11,7 +11,10 @@
 				></textarea>
 				<!-- <input type="file" class="form-control" id="attachement" /> -->
 				<div class="mar-top clearfix">
-					<button @click="createPost()" class="btn btn-sm btn-share pull-right">
+					<button
+						@click="createPost()"
+						class="btn btn-sm btn-share pull-right text-white"
+					>
 						<i class="fas fa-pencil-alt"></i> Partager
 					</button>
 				</div>
@@ -65,19 +68,20 @@ const API_URL = 'http://localhost:3000/groupomania';
 
 export default {
 	name: 'Posts',
+
 	data() {
 		return {
 			posts: [],
+			post: {},
 			user: this.$store.state.auth.user,
 			content: '',
 			attachement: '',
-			
 		};
 	},
 	beforeMount() {
 		this.getAllPosts();
 	},
-	
+
 	methods: {
 		createPost() {
 			if (this.content != '') {
@@ -87,7 +91,8 @@ export default {
 						{ content: this.content },
 						{
 							headers: {
-								Authorization: 'Bearer ' + this.$store.state.auth.user.tokenConnection,
+								Authorization:
+									'Bearer ' + this.$store.state.auth.user.tokenConnection,
 							},
 						}
 					);
@@ -102,15 +107,31 @@ export default {
 			const response = await UserService.getAllPosts();
 			return (this.posts = response.data);
 		},
-		deletePost() {
-			console.log('OK');
-			console.log(this.posts.User.id);
+		async deletePost() {
+			const data = this.posts.filter((post) => {
+				return (this.post = post.id);
+			});
+			console.log('data');
+			console.log(data);
+			const response = await UserService.deletePost(this.post);
+			// this.$router.push('/profile');
+			console.log('this.post');
+			console.log(this.post);
+			console.log('response');
+			console.log(response);
 		},
-		dateFormat(date){
-            const event = new Date(date);
-            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-            return event.toLocaleDateString('fr-FR', options);
-        }
+
+		dateFormat(date) {
+			const event = new Date(date);
+			const options = {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+				hour: 'numeric',
+				minute: 'numeric',
+			};
+			return event.toLocaleDateString('fr-FR', options);
+		},
 	},
 };
 </script>

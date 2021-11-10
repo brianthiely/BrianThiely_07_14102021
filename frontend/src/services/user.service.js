@@ -12,8 +12,9 @@ class UserService {
   getPostsUser(id) {
     return axios.get(API_URL + '/post/' + id, { headers: authHeader() })
   }
-  deletePost() {
-    // return axios.delete(API_URL + '/post/delete/' + post.id, { headers: authHeader() })
+
+  deletePost(id) {
+    return axios.delete(API_URL + '/post/delete/' + id, { headers: authHeader() })
   }
 
   getAllUsers() {
