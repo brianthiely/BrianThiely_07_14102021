@@ -50,7 +50,7 @@
 							{{ dateFormat(post.createdAt) }}
 						</p>
 					</div>
-					<button v-if="user.admin === true" @click="deletePost()">
+					<button v-if="user.admin === true" @click="deletePost(post.id)">
 						Supprimer
 					</button>
 				</div>
@@ -72,7 +72,6 @@ export default {
 	data() {
 		return {
 			posts: [],
-			post: {},
 			user: this.$store.state.auth.user,
 			content: '',
 			attachement: '',
@@ -107,17 +106,11 @@ export default {
 			const response = await UserService.getAllPosts();
 			return (this.posts = response.data);
 		},
-		async deletePost() {
-			const data = this.posts.filter((post) => {
-				return (this.post = post.id);
-			});
+		async deletePost(data) {
 			console.log('data');
 			console.log(data);
-			const response = await UserService.deletePost(this.post);
-			// this.$router.push('/profile');
-			console.log('this.post');
-			console.log(this.post);
-			console.log('response');
+			const response = await UserService.deletePost(data);
+			this.$router.go();
 			console.log(response);
 		},
 

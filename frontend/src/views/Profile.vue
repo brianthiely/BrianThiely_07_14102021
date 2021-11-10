@@ -60,7 +60,7 @@
 									</p>
 									<div class="divider py-1 bg-dark mb-5"></div>
 								</div>
-								<button @click="deletePost()">
+								<button @click="deletePost(post.id)">
 									Supprimer le post
 								</button>
 							</div>
@@ -129,18 +129,12 @@ export default {
 			this.$router.push('/');
 		},
 
-		async deletePost() {
-			const data = this.posts.filter((post) => {
-				return (this.post = post.id);
-			});
-			console.log('data DELETE');
+		async deletePost(data) {
+			console.log('data');
 			console.log(data);
-			const response = await UserService.deletePost(this.post);
-			this.$router.push('/profile');
-			console.log('response DELETE');
+			const response = await UserService.deletePost(data);
+			this.$router.go();
 			console.log(response);
-			console.log('response delete THIS.POST');
-			console.log(this.post);
 		},
 	},
 };
