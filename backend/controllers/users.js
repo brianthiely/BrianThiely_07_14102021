@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Post } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cryptojs = require('crypto-js');
@@ -11,7 +11,6 @@ exports.signup = async (req, res, next) => {
 	const password = params.password;
 	const firstName = params.firstName;
 	const lastName = params.lastName;
-
 
 	const emailRegex =
 		/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -103,7 +102,9 @@ exports.login = async (req, res, next) => {
 		res.status(200).json({
 			id: user.id,
 			tokenConnection,
-			admin: user.isAdmin
+			admin: user.isAdmin,
+			firstName: user.firstName,
+			lastName: user.lastName,
 		});
 
 		if (!tokenConnection) {
@@ -169,11 +170,18 @@ exports.updateUser = async (req, res, next) => {
 
 // Suppression compte utilisateur
 exports.deleteUser = async (req, res, next) => {
+	const { id } = req.params;
 	try {
-		const { id } = req.params;
-		const deleteResult = await User.destroy({ where: { id: id } });
-		res.status(200).json({ deleteResult: deleteResult });
+		const deletePostUser = await Post.destroy({ where: { userId: id } });
+		console.log(deletePostUser);
 	} catch (error) {
-		next(error);
+		console.log(error);
 	}
+
+	try {
+		await User.destroy({ where: { id: id } });
+	} catch (error) {
+		console.log(error);
+	}
+	res.status(200).json({ message: 'Réussi' });
 };

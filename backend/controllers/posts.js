@@ -34,7 +34,6 @@ exports.readAllPosts = async (req, res, next) => {
 		// Récupere les valeurs
 		const order = req.query.order;
 
-
 		const posts = await Post.findAll({
 			// si value = null order.split(url) divisera le "strings" à chaque (":") et les retournera en tableau qu'elle triera en ordre de création decroissant
 			order: [order != null ? order.split(':') : ['createdAt', 'DESC']],
@@ -122,33 +121,22 @@ exports.updatePost = async (req, res, next) => {
 // Supprime publication
 exports.deletePost = async (req, res, next) => {
 	try {
-		const { id } = req.params;
+
 		const post = await Post.findOne({
-			where: { id: id },
+			where: {
+				id: req.params.id,
+			},
 		});
 
-		if (post.attachement !== null) {
-			const filename = post.attachement.split('/images')[1];
-			fs.unlink(`images/${filename}`, () => {
-				Post.destroy({
-					where: { id: id },
-				});
-				res.status(200).json({ message: 'Publication supprimé avec succès' });
+		if ((post && post.userId == req.user.id) || req.user.isAdmin == true) {
+			Post.destroy({
+				where: {
+					id: req.params.id,
+				},
 			});
 		}
-
-		// const destroyComments = await Comment.destroy({
-		// 	where: { id: id },
-		// });
-
-		// if (!destroyComments) {
-		// 	throw new Error('Tentative de suppresion commentaire echoué');
-		// } else {
-		// 	res.status(200).json({
-		// 		message: 'les commentaires ont également été supprimé avec succès',
-		// 	});
-		// }
-	} catch (error) {
+		res.status(200).send({ message: 'Post supprimé !' });
+	} catch {
 		res.status(400).json({ error: error.message });
 	}
 };

@@ -11,7 +11,7 @@ const multer = require('../middleware/multer-config')
 router.post('/post/create',auth, multer,  postCtrl.createPost);
 // Affiche publications
 router.get('/posts',auth, postCtrl.readAllPosts);
-// Affiche publication
+// Affiche publications user
 router.get('/post/:id',auth, postCtrl.readPostsUser);
 // Modification publication
 router.put('/post/update/:id',auth, multer, postCtrl.updatePost);
