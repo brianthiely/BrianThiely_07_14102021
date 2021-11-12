@@ -160,12 +160,12 @@ export default {
 
 <style scoped>
 .login-wrapper {
-  display: flex;
+	display: flex;
 	align-items: center;
 	justify-content: center;
 	min-height: 100vh;
 	padding: 32px;
-  background-image: url(../assets/logo/icon.svg);
+	background-image: url(../assets/logo/icon.svg);
 	background-repeat: no-repeat;
 }
 
@@ -190,5 +190,5 @@ export default {
 
 .form-row__input::placeholder {
 	color: #aaaaaa;
-}</style
->>
+}
+</style>

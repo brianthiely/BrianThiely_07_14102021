@@ -21,15 +21,13 @@
 			</form>
 		</div>
 
-		<div class="col-10">
+		<div class="col-12">
 			<span class="font-weight-bold">Fil d'actualité</span><br /><br />
 			<div v-for="post in posts" :key="post.id" class="post-content">
-				<div
-					class="post-container  d-flex justify-content-around  align-items-center"
-				>
+				<div class="post-container    align-items-center">
 					<!-- FEATURE PICTURE -->
 					<div>
-						<div class="user-info">
+						<div class="user-info mb-3">
 							<h5>
 								<!-- BINDER PROFIL USER -->
 								<a class="profile-link">
@@ -37,6 +35,7 @@
 								>
 							</h5>
 						</div>
+						<p class="font-weight-bold">A publiée:</p>
 					</div>
 					<div class="post-detail">
 						<div class="post-text">
@@ -44,14 +43,40 @@
 								{{ post.content }}
 							</p>
 						</div>
-						<div class="divider py-1 bg-success"></div>
+						<div class="">------</div>
 
 						<p class="text-muted">
 							{{ dateFormat(post.createdAt) }}
 						</p>
 					</div>
-					<button v-if="user.admin === true" @click="deletePost(post.id)">
+					<button
+						class="mr-5 p-1"
+						v-if="user.admin === true || user.id === post.userId"
+						@click="deletePost(post.id)"
+					>
 						Supprimer
+					</button>
+					<button
+						class="p-1 mb-4"
+						v-if="user.id === post.userId"
+						@click="showarea()"
+					>
+						Modifier
+					</button>
+					<textarea
+						v-model="content"
+						class="mb-3"
+						style="display:none"
+						id="textarea"
+						cols="30"
+						rows="2"
+					></textarea>
+					<button
+						@click="modifyPost(post.id)"
+						id="btn-textarea"
+						style="display:none"
+					>
+						Confirmer
 					</button>
 				</div>
 			</div>
@@ -62,8 +87,6 @@
 <script>
 import UserService from '../services/user.service';
 import axios from 'axios';
-// const user = JSON.parse(localStorage.getItem('user'));
-// import { mapState } from '../store/auth.module'
 const API_URL = 'http://localhost:3000/groupomania';
 
 export default {
@@ -74,7 +97,6 @@ export default {
 			posts: [],
 			user: this.$store.state.auth.user,
 			content: '',
-			attachement: '',
 		};
 	},
 	beforeMount() {
@@ -107,11 +129,45 @@ export default {
 			return (this.posts = response.data);
 		},
 		async deletePost(data) {
-			console.log('data');
-			console.log(data);
 			const response = await UserService.deletePost(data);
 			this.$router.go();
 			console.log(response);
+		},
+
+		async showarea(data) {
+			try {
+				const textarea = document.getElementById('textarea');
+				const btnTextArea = document.getElementById('btn-textarea');
+				if (
+					textarea.style.display == 'none' &&
+					btnTextArea.style.display == 'none'
+				) {
+					textarea.style.display = 'block';
+					btnTextArea.style.display = 'block';
+				}
+			} catch (error) {
+				console.log(error);
+			}
+			console.log(data);
+		},
+
+		modifyPost(data) {
+			try {
+				axios.put(
+					API_URL + '/post/update/' + data,
+					{ content: this.content },
+					{
+						headers: {
+							Authorization:
+								'Bearer ' + this.$store.state.auth.user.tokenConnection,
+						},
+					}
+				);
+				this.$router.go();
+			} catch (error) {
+				console.log(error);
+			}
+			console.log(data);
 		},
 
 		dateFormat(date) {
