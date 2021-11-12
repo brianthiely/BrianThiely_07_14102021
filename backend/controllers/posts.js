@@ -90,9 +90,6 @@ exports.readPostsUser = async (req, res, next) => {
 // Modifie publication
 exports.updatePost = async (req, res, next) => {
 	try {
-		const attachment = `${req.protocol}://${req.get('host')}/images/${
-			req.params.attachement
-		}`;
 		const { id } = req.params;
 		const findPost = await Post.findOne({
 			where: { id: id },
@@ -108,7 +105,6 @@ exports.updatePost = async (req, res, next) => {
 
 		await findPost.update({
 			content: req.body.content,
-			attachment: attachment,
 			userId: req.user.id,
 		});
 
