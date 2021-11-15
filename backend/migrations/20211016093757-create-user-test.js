@@ -25,13 +25,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      role: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      picture: {
-        type: Sequelize.STRING
-      },
       isAdmin: {
         defaultValue: false,
         type: Sequelize.BOOLEAN
