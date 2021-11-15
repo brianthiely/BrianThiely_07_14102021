@@ -11,15 +11,15 @@
 #### Après avoir récupérer le projet il faut installer les dépendances
 
 ```js
-  cd frontend
-  npm install  
-  npm run serve 
-```
-
-```js
   cd backend
   npm install  
   npm run start
+```
+
+```js
+  cd frontend
+  npm install  
+  npm run serve 
 ```
 
 ### Maintenant récupérez la BDD
