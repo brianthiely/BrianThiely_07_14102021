@@ -46,5 +46,8 @@ SECRET_CRYPTOJS_TOKEN = "ihiughoiT7697GIgigi96"
 PASSWORD_ADMIN = "i7s5barPG@jEHBdc"
 ```
 
+##### Lancez les migrations
+``` npx sequelize-cli db:migrate ```
+
 ## Vous pouvez dès à présent utiliser Groupomania
 ### Connectez-vous en tant que admin avec "chargedecom@gmail.com" et le PASSWORD_ADMIN
