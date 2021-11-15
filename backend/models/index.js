@@ -26,7 +26,7 @@ sequelize.authenticate()
 // 	.toString(cryptojs.enc.Base64);
 // const adminUser = sequelize.query(
 // 	`INSERT INTO Users (id,email,password,firstName,lastName, role, picture, isAdmin,createdAt,updatedAt)
-//     	VALUES (DEFAULT,"${cryptEmail}", "${password}", "Marc", "Zuckerberg", "Chargé de communication", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLb2UcGv-n7cL7WBm47YL_BYcU_8FN4pAwtymihXD36YNvsZAUcVPCJtLHb-WalxHViro&usqp=CAU", 1, CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`
+//     	VALUES (DEFAULT,"${cryptEmail}", "${password}", "Jack", "Dorsey", "Chargé de communication", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLb2UcGv-n7cL7WBm47YL_BYcU_8FN4pAwtymihXD36YNvsZAUcVPCJtLHb-WalxHViro&usqp=CAU", 1, CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)`
 // );
 
 fs.readdirSync(__dirname)
