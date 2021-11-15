@@ -30,7 +30,7 @@
 						<div class="user-info mb-3">
 							<h5>
 								<!-- BINDER PROFIL USER -->
-								<a class="profile-link">
+								<a class="profile-link text-decoration-none text-dark">
 									{{ post.User.firstName }} {{ post.User.lastName }}</a
 								>
 							</h5>
@@ -50,7 +50,7 @@
 						</p>
 					</div>
 					<button
-						class="mr-5 p-1"
+						class="me-5 p-1"
 						v-if="user.admin === true || user.id === post.userId"
 						@click="deletePost(post.id)"
 					>
@@ -132,8 +132,8 @@ export default {
 			console.log(response);
 		},
 
-		async showarea(postId) {
-			this.currentModify = postId;
+		async showarea(data) {
+			this.currentModify = data;
 			console.log(this.currentModify);
 		},
 

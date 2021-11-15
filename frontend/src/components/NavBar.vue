@@ -1,7 +1,7 @@
 <template>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-red mb-5">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-group mb-5">
 		<div class="container">
-			<a class="navbar-brand col-9" href="/dashboard">
+			<a class="navbar-brand" href="/dashboard">
 				<img
 					width="200"
 					class="imglogo"
@@ -12,20 +12,24 @@
 			<button
 				class="navbar-toggler"
 				type="button"
-				data-toggle="collapse"
+				data-bs-toggle="collapse"
+				data-bs-target="#navbarNavDropdown"
+				aria-controls="navbarNavDropdown"
 				aria-expanded="false"
 				aria-label="Toggle navigation"
 			>
 				<span class="navbar-toggler-icon"></span>
 			</button>
-
-			<div class="collapse navbar-collapse">
-				<form class="form-inline my-2 my-md-0">
-					<a @click="getUser" class="mr-5 text-white pe-click">Mon profile</a>
-					<div @click="logout" class="text-white pe-click">
-						<i class="fas fa-sign-out-alt"></i>
-					</div>
-				</form>
+			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a @click="getUser" class="nav-link text-white pe-click" href="#">Mon profile</a>
+					</li>
+					<li class="nav-tem">
+						<a @click="logout" class="nav-link text-white pe-click" href="#">Déconnexion</a>
+					</li>
+			
+				</ul>
 			</div>
 		</div>
 	</nav>
@@ -53,7 +57,7 @@ export default {
 </script>
 
 <style scoped>
-.bg-red {
+.bg-group {
 	background-color: #fd2d01;
 }
 .pe-click {
