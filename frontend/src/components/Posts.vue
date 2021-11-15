@@ -59,25 +59,22 @@
 					<button
 						class="p-1 mb-4"
 						v-if="user.id === post.userId"
-						@click="showarea()"
+						@click="showarea(post.id)"
 					>
 						Modifier
 					</button>
-					<textarea
-						v-model="content"
-						class="mb-3"
-						style="display:none"
-						id="textarea"
-						cols="30"
-						rows="2"
-					></textarea>
-					<button
-						@click="modifyPost(post.id)"
-						id="btn-textarea"
-						style="display:none"
-					>
-						Confirmer
-					</button>
+					<div v-if="currentModify == post.id">
+						<textarea
+							v-model="content"
+							class="mb-3"
+							id="textarea"
+							cols="30"
+							rows="2"
+						></textarea>
+						<button @click="modifyPost(post.id)" id="btn-textarea">
+							Confirmer
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -97,6 +94,7 @@ export default {
 			posts: [],
 			user: this.$store.state.auth.user,
 			content: '',
+			currentModify: 0,
 		};
 	},
 	beforeMount() {
@@ -134,21 +132,9 @@ export default {
 			console.log(response);
 		},
 
-		async showarea(data) {
-			try {
-				const textarea = document.getElementById('textarea');
-				const btnTextArea = document.getElementById('btn-textarea');
-				if (
-					textarea.style.display == 'none' &&
-					btnTextArea.style.display == 'none'
-				) {
-					textarea.style.display = 'block';
-					btnTextArea.style.display = 'block';
-				}
-			} catch (error) {
-				console.log(error);
-			}
-			console.log(data);
+		async showarea(postId) {
+			this.currentModify = postId;
+			console.log(this.currentModify);
 		},
 
 		modifyPost(data) {
